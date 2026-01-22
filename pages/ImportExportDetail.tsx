@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Car, HardHat, Utensils, ArrowLeft, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle } from 'lucide-react';
-import emailjs from '@emailjs/browser';
 
 // Liste des pays mondiaux pour le préfixe
 const COUNTRIES = [
@@ -72,19 +71,8 @@ const SUV_REALISATIONS = [
   }
 ];
 
-const PARTNER_LOGOS = [
-  "https://i.imgur.com/dHxWvTS.jpeg",
-  "https://i.imgur.com/XcbUuks.jpeg",
-  "https://i.imgur.com/W7KYsPy.jpeg",
-  "https://i.imgur.com/8dyxMMB.jpeg",
-  "https://i.imgur.com/QWW6rdI.png",
-  "https://i.imgur.com/b6pDZtj.png",
-  "https://i.imgur.com/npEqAk.png"
-];
-
 const ImportExportDetail: React.FC = () => {
   const { sector } = useParams<{ sector: string }>();
-  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -104,11 +92,6 @@ const ImportExportDetail: React.FC = () => {
     budget: '',
     delai: ''
   });
-
-  // Initialisation au montage du composant
-  useEffect(() => {
-    emailjs.init("lYiOrKB0lgjF0ZMG-");
-  }, []);
 
   useEffect(() => {
     if (sector !== 'vehicules') return;
@@ -194,53 +177,36 @@ const ImportExportDetail: React.FC = () => {
 
   const handleRequestQuote = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSuccess || isSubmitting) return;
-
-    if (!validateForm()) {
-      return;
-    }
-
+    if (!validateForm()) return;
     setIsSubmitting(true);
 
-    // Préparation des données EXACTEMENT comme configurées dans votre template EmailJS
-    const templateParams = {
-      from_name: formData.nomComplet,
-      from_email: formData.email,
-      phone_number: `${formData.prefix} ${formData.telephone}`,
-      car_model: formData.modeleRecherche,
-      budget_value: formData.budget,
-      delay_value: formData.delai,
-      sector_title: sectorData.title,
-      to_email: "rexsolutionspro@gmail.com"
-    };
-
     try {
-      console.log("Tentative d'envoi avec les paramètres:", templateParams);
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nom: formData.nomComplet,
+          email: formData.email,
+          telephone: `${formData.prefix} ${formData.telephone}`,
+          details: formData.modeleRecherche,
+          budget: formData.budget,
+          delai: formData.delai,
+          secteur: sectorData.title
+        })
+      });
 
-      const result = await emailjs.send(
-        'service_n77ztkj', // VÉRIFIEZ CE CODE SUR EMAILJS
-        'template_k37iogn', // VÉRIFIEZ CE CODE SUR EMAILJS
-        templateParams,
-        'GJgJjJ_YGDZTs_O4d'  // VÉRIFIEZ VOTRE PUBLIC KEY
-      );
-
-      console.log("Succès EmailJS:", result.status, result.text);
-      
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      setErrors({});
-    } catch (error: any) {
-      console.error("ERREUR DÉTAILLÉE EMAILJS:", error);
-      setIsSubmitting(false);
-      
-      // Gestion des erreurs améliorée
-      if (error.status === 403 || error.status === 401) {
-        alert("Erreur d'authentification EmailJS : Vérifiez votre Public Key et vos ID de service/template.");
-      } else if (error.message === "Failed to fetch") {
-        alert("L'envoi est bloqué par votre navigateur ou un bloqueur de pub. Essayez en mode navigation privée.");
+      if (response.ok) {
+        setIsSuccess(true);
       } else {
-        alert("Erreur technique : " + (error.text || "Veuillez vérifier vos identifiants EmailJS."));
+        const errorData = await response.json();
+        console.error("Erreur API :", errorData);
+        alert(`Désolé, le serveur a renvoyé une erreur : ${errorData.error || response.statusText}`);
       }
+    } catch (err) {
+      console.error("Erreur Fetch :", err);
+      alert("Impossible de joindre le service d'envoi. Veuillez vérifier votre connexion ou réessayer plus tard. Si le problème persiste, contactez-nous au +32 466 253 255.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -302,7 +268,7 @@ const ImportExportDetail: React.FC = () => {
         </section>
       )}
 
-      {/* Formulaire & Confirmation */}
+      {/* Formulaire */}
       <section id="form-section" className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 scroll-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           {/* Processus */}
@@ -437,8 +403,8 @@ const ImportExportDetail: React.FC = () => {
                     <div className="mt-8 text-center animate-in fade-in slide-in-from-top-4">
                       <p className="text-gray-700 text-sm font-medium leading-relaxed">
                         Merci pour votre confiance ! <br/>
-                        Votre dossier de recherche a été transmis. <br/>
-                        <span className="text-black font-bold">Faradji Régis</span> (Gérant - Rex Solutions) vous contactera sous <span className="underline decoration-green-500 decoration-2">24 heures</span>.
+                        Votre dossier de recherche a été transmis avec succès. <br/>
+                        <span className="text-black font-bold">Faradji Régis</span> (Gérant - Rex Solutions) traitera votre demande sous <span className="underline decoration-green-500 decoration-2">24 heures</span>.
                       </p>
                     </div>
                   )}
