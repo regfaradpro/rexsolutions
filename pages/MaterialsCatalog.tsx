@@ -189,6 +189,54 @@ const PRODUCTS = [
     stock: true,
     delivery: "24h",
     badge: null
+  },
+  {
+    id: 12,
+    name: "Barres d’armature HA",
+    brand: "ArcelorMittal",
+    category: "acier",
+    image: "https://i.imgur.com/nrhrhVg.jpeg",
+    description: "Aciers nervurés haute adhérence conçus pour le ferraillage des fondations, poteaux et poutres. Offrent une adhérence optimale au béton et une haute résistance mécanique.",
+    specs: ["Diamètre 10mm", "Long. 6m", "Haute Adhérence", "Acier S500"],
+    price: 10.20,
+    unit: "barre",
+    rating: 4.9,
+    reviews: 92,
+    stock: true,
+    delivery: "24h",
+    badge: null
+  },
+  {
+    id: 13,
+    name: "Fil machine pour armatures",
+    brand: "Bekaert",
+    category: "acier",
+    image: "https://i.imgur.com/eB9hSDy.jpeg",
+    description: "Fil d’acier utilisé pour la fabrication de treillis soudés, ligatures et éléments de renfort. Haute régularité dimensionnelle et excellente ductilité.",
+    specs: ["Fil d'acier tréfilé", "Ductilité élevée", "Usage polyvalent", "Conforme NF/BE"],
+    price: 0.95,
+    unit: "kg",
+    rating: 4.7,
+    reviews: 54,
+    stock: true,
+    delivery: "24h",
+    badge: null
+  },
+  {
+    id: 14,
+    name: "Treillis en rouleaux",
+    brand: "Riva Group",
+    category: "acier",
+    image: "https://i.imgur.com/VuF3HDH.gif",
+    description: "Solution flexible pour le renforcement des chapes, dallages et ouvrages minces. Facile à transporter, découper et poser sur chantier.",
+    specs: ["Maille 150x150mm", "Fil 5mm", "Rouleau 25m x 2.4m", "Pose rapide"],
+    price: 125.00,
+    unit: "rouleau",
+    rating: 4.8,
+    reviews: 61,
+    stock: true,
+    delivery: "24h",
+    badge: null
   }
 ];
 
