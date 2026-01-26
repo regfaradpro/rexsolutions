@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
-/* Added Shield to the list of imports from lucide-react */
-import { Search, ChevronRight, Star, Truck, MapPin, Filter, ArrowUpDown, ChevronDown, Check, Package, Info, ArrowLeft, Shield } from 'lucide-react';
+/* Added X for the close button in the zoom modal */
+import { Search, ChevronRight, Star, Truck, MapPin, Filter, ArrowUpDown, ChevronDown, Check, Package, Info, ArrowLeft, Shield, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const CATEGORIES = [
@@ -116,6 +116,7 @@ const MaterialsCatalog: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('relevant');
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
   const filteredProducts = useMemo(() => {
     let result = PRODUCTS.filter(product => {
@@ -131,7 +132,28 @@ const MaterialsCatalog: React.FC = () => {
   }, [selectedCategory, searchQuery, sortBy]);
 
   return (
-    <div className="bg-[#F5F5F5] min-h-screen selection:bg-black selection:text-white">
+    <div className="bg-[#F5F5F5] min-h-screen selection:bg-black selection:text-white relative">
+      {/* Zoom Modal (Lightbox) */}
+      {zoomedImage && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-300 cursor-zoom-out"
+          onClick={() => setZoomedImage(null)}
+        >
+          <button 
+            className="absolute top-8 right-8 text-white hover:rotate-90 transition-all duration-300 z-[110]"
+            onClick={(e) => { e.stopPropagation(); setZoomedImage(null); }}
+          >
+            <X className="h-10 w-10" />
+          </button>
+          <img 
+            src={zoomedImage} 
+            alt="Zoom produit" 
+            className="max-w-full max-h-full object-contain shadow-2xl rounded-lg animate-in zoom-in-95 duration-300"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
       {/* Search Header */}
       <div className="bg-white border-b border-gray-200 py-4 sticky top-20 z-40">
         <div className="max-w-[1400px] mx-auto px-4 md:px-8">
@@ -240,7 +262,10 @@ const MaterialsCatalog: React.FC = () => {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                       alt={p.name} 
                     />
-                    <button className="absolute bottom-4 right-4 w-10 h-10 bg-white/80 backdrop-blur-md shadow-md rounded-full flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all hover:bg-black hover:text-white">
+                    <button 
+                      onClick={() => setZoomedImage(p.image)}
+                      className="absolute bottom-4 right-4 w-10 h-10 bg-white/80 backdrop-blur-md shadow-md rounded-full flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all hover:bg-black hover:text-white z-20"
+                    >
                       <Search className="h-4 w-4" />
                     </button>
                   </div>
