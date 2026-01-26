@@ -201,33 +201,6 @@ const MaterialsCatalog: React.FC = () => {
                     ))}
                   </div>
                 </div>
-
-                <div>
-                  <h4 className="text-xs font-bold text-gray-900 mb-4 uppercase tracking-wider">Disponibilité</h4>
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <div className="w-5 h-5 rounded-md border-2 border-gray-200 group-hover:border-gray-400 flex items-center justify-center transition-all">
-                        <Check className="h-3 w-3 text-transparent group-hover:text-gray-200" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-500 group-hover:text-black transition-colors">En stock</span>
-                    </label>
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <div className="w-5 h-5 rounded-md border-2 border-gray-200 group-hover:border-gray-400 flex items-center justify-center transition-all">
-                        <Check className="h-3 w-3 text-transparent group-hover:text-gray-200" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-500 group-hover:text-black transition-colors">Sur commande</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div className="pt-6 border-t border-gray-100">
-                  <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
-                    <Package className="h-5 w-5 text-gray-400" />
-                    <div className="text-[10px] font-bold text-gray-500 leading-tight uppercase tracking-widest">
-                      Plus de <span className="text-black">2500</span> références professionnelles
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </aside>
