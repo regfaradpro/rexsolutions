@@ -28,7 +28,7 @@ const PRODUCTS = [
     reviews: 124,
     stock: true,
     delivery: "24h",
-    badge: "Top Vente"
+    badge: null
   },
   {
     id: 2,
@@ -44,7 +44,7 @@ const PRODUCTS = [
     reviews: 45,
     stock: true,
     delivery: "24h",
-    badge: "Nouveau"
+    badge: null
   },
   {
     id: 3,
@@ -76,7 +76,7 @@ const PRODUCTS = [
     reviews: 89,
     stock: true,
     delivery: "24h",
-    badge: "Meilleur Rapport Q/P"
+    badge: null
   },
   {
     id: 5,
@@ -108,7 +108,7 @@ const PRODUCTS = [
     reviews: 67,
     stock: true,
     delivery: "24h",
-    badge: "Essentiel"
+    badge: null
   }
 ];
 
@@ -125,8 +125,6 @@ const MaterialsCatalog: React.FC = () => {
       return matchesCategory && matchesSearch;
     });
 
-    if (sortBy === 'price-asc') result.sort((a, b) => a.price - b.price);
-    if (sortBy === 'price-desc') result.sort((a, b) => b.price - a.price);
     if (sortBy === 'rating') result.sort((a, b) => b.rating - a.rating);
 
     return result;
@@ -262,12 +260,6 @@ const MaterialsCatalog: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredProducts.map((p) => (
                 <div key={p.id} className="bg-white group rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full relative">
-                  {p.badge && (
-                    <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-black text-white text-[9px] font-black uppercase tracking-widest rounded-md shadow-lg">
-                      {p.badge}
-                    </div>
-                  )}
-                  
                   {/* Image Container */}
                   <div className="h-60 bg-[#F9F9F9] relative overflow-hidden flex items-center justify-center">
                     <img 
