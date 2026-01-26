@@ -109,6 +109,22 @@ const PRODUCTS = [
     stock: true,
     delivery: "24h",
     badge: null
+  },
+  {
+    id: 7,
+    name: "Fer à béton HA diam. 12mm",
+    brand: "SteelPro",
+    category: "acier",
+    image: "https://i.imgur.com/3fpRPgB.jpeg",
+    description: "Barre d'acier nervuré pour renfort béton.",
+    specs: ["Diamètre 12mm", "Long. 6m", "Soudable"],
+    price: 11.80,
+    unit: "barre",
+    rating: 4.8,
+    reviews: 67,
+    stock: true,
+    delivery: "24h",
+    badge: null
   }
 ];
 
