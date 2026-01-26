@@ -9,6 +9,7 @@ import Checkout from './pages/Checkout';
 import Terms from './pages/Terms';
 import Legal from './pages/Legal';
 import Commerce from './pages/Commerce';
+import MaterialsCatalog from './pages/MaterialsCatalog';
 import Consultance from './pages/Consultance';
 import Transport from './pages/Transport';
 import ImportExport from './pages/ImportExport';
@@ -29,6 +30,7 @@ const App: React.FC = () => {
             <Route path="/conditions-generales" element={<Terms />} />
             <Route path="/mentions-legales" element={<Legal />} />
             <Route path="/commerce" element={<Commerce />} />
+            <Route path="/commerce/catalogue-materiaux" element={<MaterialsCatalog />} />
             <Route path="/consultance" element={<Consultance />} />
             <Route path="/transport" element={<Transport />} />
             <Route path="/import-export" element={<ImportExport />} />
