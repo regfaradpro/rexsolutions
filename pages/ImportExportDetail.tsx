@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Car, HardHat, Utensils, ArrowLeft, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle } from 'lucide-react';
@@ -217,23 +216,27 @@ const ImportExportDetail: React.FC = () => {
   return (
     <div className="bg-white min-h-screen selection:bg-black selection:text-white pb-32 overflow-x-hidden">
       {/* Hero */}
-      <section className="relative h-[65vh] flex items-center overflow-hidden">
+      <section className="relative h-[70vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={sectorData.image} className="w-full h-full object-cover grayscale opacity-40 scale-110" alt={sectorData.title} />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-white"></div>
+          <img src={sectorData.image} className="w-full h-full object-cover grayscale opacity-60 scale-105" alt={sectorData.title} />
+          {/* Strengthened gradient for readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/60 to-white/20"></div>
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full pt-20 text-white">
-          <Link to="/import-export" className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-white/50 hover:text-white transition-colors mb-8 group">
+          <Link to="/import-export" className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-white/70 hover:text-white transition-colors mb-8 group drop-shadow-md">
             <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" /> Retour à l'Import-Export
           </Link>
           <div className="max-w-3xl">
             <div className="w-16 h-16 bg-white text-black rounded-2xl flex items-center justify-center mb-8 shadow-2xl">
               {sectorData.icon}
             </div>
-            <h1 className="text-4xl md:text-[5rem] font-black tracking-tighter uppercase leading-[0.9] mb-6 animate-in slide-in-from-bottom-10">
+            {/* Added shadow for maximum legibility */}
+            <h1 className="text-4xl md:text-[5.5rem] font-black tracking-tighter uppercase leading-[0.85] mb-6 animate-in slide-in-from-bottom-10 drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">
               {sectorData.title}
             </h1>
-            <p className="text-lg md:text-xl text-gray-200 font-light max-w-2xl">{sectorData.desc}</p>
+            <p className="text-lg md:text-2xl text-gray-100 font-light max-w-2xl leading-relaxed drop-shadow-md opacity-90">
+              {sectorData.desc}
+            </p>
           </div>
         </div>
       </section>
@@ -249,8 +252,8 @@ const ImportExportDetail: React.FC = () => {
                   <img src={real.image} className={`w-full h-full object-cover transition-all duration-[10000ms] ${idx === currentSlide ? 'scale-110' : 'scale-100'}`} alt={real.model} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                   <div className="absolute inset-0 p-8 md:p-20 flex flex-col justify-end">
-                    <h3 className="text-3xl md:text-6xl font-black text-white uppercase mb-2">{real.model}</h3>
-                    <h4 className="text-xl md:text-3xl font-black text-white/70 uppercase mb-8">{real.submodel}</h4>
+                    <h3 className="text-3xl md:text-6xl font-black text-white uppercase mb-2 drop-shadow-lg">{real.model}</h3>
+                    <h4 className="text-xl md:text-3xl font-black text-white/70 uppercase mb-8 drop-shadow-md">{real.submodel}</h4>
                     <div className="grid grid-cols-3 gap-8 pt-10 border-t border-white/20">
                       <div><p className="text-[10px] font-black text-white/50 uppercase mb-1 tracking-widest">Puissance</p><p className="text-white font-bold">{real.specs.power}</p></div>
                       <div><p className="text-[10px] font-black text-white/50 uppercase mb-1 tracking-widest">Moteur</p><p className="text-white font-bold">{real.specs.engine}</p></div>
@@ -260,8 +263,8 @@ const ImportExportDetail: React.FC = () => {
                 </div>
               ))}
               <div className="absolute right-8 bottom-8 z-30 flex items-center gap-4">
-                <button onClick={() => setCurrentSlide(prev => (prev === 0 ? SUV_REALISATIONS.length - 1 : prev - 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center"><ChevronLeft className="h-5 w-5"/></button>
-                <button onClick={() => setCurrentSlide(prev => (prev === SUV_REALISATIONS.length - 1 ? 0 : prev + 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center"><ChevronRight className="h-5 w-5"/></button>
+                <button onClick={() => setCurrentSlide(prev => (prev === 0 ? SUV_REALISATIONS.length - 1 : prev - 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronLeft className="h-5 w-5"/></button>
+                <button onClick={() => setCurrentSlide(prev => (prev === SUV_REALISATIONS.length - 1 ? 0 : prev + 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronRight className="h-5 w-5"/></button>
               </div>
             </div>
           </div>
@@ -274,7 +277,7 @@ const ImportExportDetail: React.FC = () => {
           {/* Processus */}
           <div className="lg:col-span-5 space-y-12">
             <div>
-              <h2 className="text-3xl font-black uppercase tracking-tighter mb-8">Processus d'Importation</h2>
+              <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 text-gray-900">Processus d'Importation</h2>
               <div className="space-y-8">
                 {[
                   { n: '01', t: 'Briefing Client', d: 'Remplissez le formulaire avec vos critères précis.' },
@@ -283,7 +286,7 @@ const ImportExportDetail: React.FC = () => {
                 ].map((step) => (
                   <div key={step.n} className="flex gap-6 group">
                     <span className="text-5xl font-black text-gray-100 group-hover:text-black transition-colors">{step.n}</span>
-                    <div><h4 className="font-bold text-xl mb-1">{step.t}</h4><p className="text-gray-500 text-sm leading-relaxed">{step.d}</p></div>
+                    <div><h4 className="font-bold text-xl mb-1 text-gray-900">{step.t}</h4><p className="text-gray-500 text-sm leading-relaxed">{step.d}</p></div>
                   </div>
                 ))}
               </div>
@@ -301,7 +304,7 @@ const ImportExportDetail: React.FC = () => {
           {/* Formulaire */}
           <div className="lg:col-span-7">
             <div className={`bg-white rounded-[3.5rem] p-8 md:p-14 shadow-2xl border transition-all duration-500 ${isSuccess ? 'border-green-400 bg-green-50/20' : 'border-gray-100'}`}>
-              <h2 className="text-2xl font-black mb-10 uppercase tracking-tight">Dossier de Recherche</h2>
+              <h2 className="text-2xl font-black mb-10 uppercase tracking-tight text-gray-900">Dossier de Recherche</h2>
               <form onSubmit={handleRequestQuote} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
