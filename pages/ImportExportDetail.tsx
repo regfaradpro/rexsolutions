@@ -180,30 +180,31 @@ const ImportExportDetail: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('https://rexsolutions.vercel.app/api/send-email', {
+      const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nom: formData.nomComplet,
+          name: formData.nomComplet,
           email: formData.email,
-          telephone: `${formData.prefix} ${formData.telephone}`,
-          details: formData.modeleRecherche,
+          phone: `${formData.prefix} ${formData.telephone}`,
+          model: formData.modeleRecherche,
           budget: formData.budget,
-          delai: formData.delai,
-          secteur: sectorData.title
-        })
+          delay: formData.delai,
+        }),
       });
 
-      if (response.ok) {
-        setIsSuccess(true);
-      } else {
-        const errorData = await response.json();
-        console.error("Erreur API :", errorData);
-        alert(`Désolé, le serveur a renvoyé une erreur : ${errorData.error || response.statusText}`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Erreur serveur');
       }
+
+      setIsSuccess(true);
     } catch (err) {
       console.error("Erreur Fetch :", err);
-      alert("Impossible de joindre le service d'envoi. Veuillez vérifier votre connexion ou réessayer plus tard. Si le problème persiste, contactez-nous au +32 466 253 255.");
+      alert(
+        "Impossible d'envoyer la demande pour le moment. Veuillez réessayer plus tard ou nous contacter au +32 466 253 255."
+      );
     } finally {
       setIsSubmitting(false);
     }
