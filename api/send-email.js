@@ -3,6 +3,33 @@ import { GoogleGenAI } from "@google/genai";
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
 
+async function generateGeminiText(prompt) {
+  const response = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
+      process.env.GEMINI_API_KEY,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [{ text: prompt }],
+          },
+        ],
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(JSON.stringify(data));
+  }
+
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+}
+
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).send({ message: 'POST only' });
 
@@ -10,8 +37,6 @@ export default async function handler(req, res) {
 
   try {
     // --- ÉTAPE 1 : GÉNÉRATION DU TEXTE PAR L'IA (Gemini 3 Flash) ---
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    
     const prompt = `
 Tu es Faradji Régis, gérant de Rex Solutions. Ton expertise est l'importation de véhicules de prestige et de matériaux industriels.
 
@@ -39,13 +64,8 @@ DIRECTIVES STRICTES :
 - Ne pas signer.
 - Langue : Français impeccable.
 `;
-
-    const result = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: prompt,
-    });
     
-    const aiResponse = result.text;
+    const aiResponse = await generateGeminiText(prompt);
 
     // --- ÉTAPE 2 : CONFIGURATION GMAIL (OAuth2) ---
     const OAuth2 = google.auth.OAuth2;
