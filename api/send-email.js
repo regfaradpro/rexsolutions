@@ -1,34 +1,47 @@
 import nodemailer from "nodemailer";
-import { google } from "googleapis";
-
-const OAuth2 = google.auth.OAuth2;
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ ok: false, message: "Method not allowed" });
   }
 
   try {
-    const oauth2Client = new OAuth2(
-      process.env.GMAIL_CLIENT_ID,
-      process.env.GMAIL_CLIENT_SECRET,
-      "https://developers.google.com/oauthplayground"
-    );
+    const { name, email, phone, model, budget, delay } = req.body;
 
-    oauth2Client.setCredentials({
-      refresh_token: process.env.GMAIL_REFRESH_TOKEN,
-    });
-
-    const accessToken = await oauth2Client.getAccessToken();
+    if (!name || !email) {
+      return res.status(400).json({ ok: false, message: "Missing fields" });
+    }
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        type: "OAuth2",
-        user: "rexsolutionspro@gmail.com",
-        clientId: process.env.GMAIL_CLIENT_ID,
-        clientSecret: process.env.GMAIL_CLIENT_SECRET,
-        refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-        accessToken: accessToken.token,
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
       },
     });
+
+    await transporter.sendMail({
+      from: `"Rex Solutions" <${process.env.GMAIL_USER}>`,
+      to: "rexsolutionspro@gmail.com",
+      subject: "Nouvelle demande de devis",
+      html: `
+        <h2>Nouvelle demande</h2>
+        <p><strong>Nom :</strong> ${name}</p>
+        <p><strong>Email :</strong> ${email}</p>
+        <p><strong>Téléphone :</strong> ${phone}</p>
+        <p><strong>Modèle :</strong> ${model}</p>
+        <p><strong>Budget :</strong> ${budget}</p>
+        <p><strong>Délai :</strong> ${delay}</p>
+      `,
+    });
+
+    return res.status(200).json({ ok: true });
+  } catch (error) {
+    console.error("EMAIL ERROR:", error);
+    return res.status(500).json({
+      ok: false,
+      message: "Email failed",
+      error: error.message,
+    });
+  }
+}
