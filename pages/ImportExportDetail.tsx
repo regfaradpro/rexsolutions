@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Car, HardHat, Utensils, ArrowLeft, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle } from 'lucide-react';
 
