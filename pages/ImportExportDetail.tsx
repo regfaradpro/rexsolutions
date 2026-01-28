@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import emailjs from "@emailjs/browser";
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Car, HardHat, Utensils, ArrowLeft, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle } from 'lucide-react';
 
@@ -182,24 +181,31 @@ const ImportExportDetail: React.FC = () => {
   setIsSubmitting(true);
 
   try {
-    await emailjs.send(
-      "service_n77ztkj",          // Service ID (EmailJS)
-      "template_k37iogn",               // Template ID
-      {
-        from_name: formData.nomComplet,
-        from_email: formData.email,
-        phone_number: `${formData.prefix} ${formData.telephone}`,
-        car_model: formData.modeleRecherche,
-        budget_value: formData.budget,
-        delay_value: formData.delai,
-        message: "Nouvelle demande via le formulaire Import / Export",
-      },
-      "Uw08Uc-MOhoxcEZIj"           // Public Key
-    );
+    const response = await fetch("/api/send-email", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name: formData.nomComplet,
+    email: formData.email,
+    phone: `${formData.prefix} ${formData.telephone}`,
+    model: formData.modeleRecherche,
+    budget: formData.budget,
+    delay: formData.delai,
+  }),
+});
+
+if (!response.ok) {
+  throw new Error("Email failed");
+}
+
+setIsSuccess(true);
+
 
     setIsSuccess(true);
   } catch (error) {
-    console.error("EmailJS error:", error);
+    console.error("Resend error:", error);
     alert(
       "Impossible d'envoyer la demande pour le moment. Veuillez réessayer ou nous contacter au +32 466 253 255."
     );
