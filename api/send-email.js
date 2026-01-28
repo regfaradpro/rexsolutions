@@ -1,22 +1,17 @@
-
 import { GoogleGenAI } from "@google/genai";
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
-import fetch from "node-fetch";
+
+
 
 async function generateGeminiText(prompt) {
   const response = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
-      process.env.GEMINI_API_KEY,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [
-          {
-            parts: [{ text: prompt }],
-          },
-        ],
+        contents: [{ parts: [{ text: prompt }] }],
       }),
     }
   );
@@ -24,11 +19,13 @@ async function generateGeminiText(prompt) {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(JSON.stringify(data));
+    console.error("Gemini API error:", data);
+    throw new Error("Gemini API error");
   }
 
   return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 }
+
 
 
 export default async function handler(req, res) {
@@ -142,7 +139,10 @@ DIRECTIVES STRICTES :
     return res.status(200).json({ success: true });
 
   } catch (error) {
-    console.error("Erreur serveur lors de l'envoi :", error);
-    return res.status(500).json({ error: error.message });
+  console.error("SEND EMAIL ERROR:", error);
+  return res.status(500).json({
+    error: "Internal server error",
+    message: error.message,
+  });
   }
 }
