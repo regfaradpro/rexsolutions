@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import emailjs from "emailjs-com";
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Car, HardHat, Utensils, ArrowLeft, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle } from 'lucide-react';
 
@@ -175,40 +176,38 @@ const ImportExportDetail: React.FC = () => {
   };
 
   const handleRequestQuote = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-    setIsSubmitting(true);
+  e.preventDefault();
+  if (!validateForm()) return;
 
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.nomComplet,
-          email: formData.email,
-          phone: `${formData.prefix} ${formData.telephone}`,
-          model: formData.modeleRecherche,
-          budget: formData.budget,
-          delay: formData.delai,
-        }),
-      });
+  setIsSubmitting(true);
 
-      const data = await response.json();
+  try {
+    await emailjs.send(
+      "service_n77ztkj",          // Service ID (EmailJS)
+      "contact_us",               // Template ID
+      {
+        from_name: formData.nomComplet,
+        from_email: formData.email,
+        phone_number: `${formData.prefix} ${formData.telephone}`,
+        car_model: formData.modeleRecherche,
+        budget_value: formData.budget,
+        delay_value: formData.delai,
+        message: "Nouvelle demande via le formulaire Import / Export",
+      },
+      "Gjglj_YGDZTs_O4d"           // Public Key
+    );
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Erreur serveur');
-      }
+    setIsSuccess(true);
+  } catch (error) {
+    console.error("EmailJS error:", error);
+    alert(
+      "Impossible d'envoyer la demande pour le moment. Veuillez réessayer ou nous contacter au +32 466 253 255."
+    );
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
-      setIsSuccess(true);
-    } catch (err) {
-      console.error("Erreur Fetch :", err);
-      alert(
-        "Impossible d'envoyer la demande pour le moment. Veuillez réessayer plus tard ou nous contacter au +32 466 253 255."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const inputBaseClass = "w-full py-3 bg-transparent border-b-2 outline-none transition-all font-medium text-base";
   const getInputBorder = (name: string) => errors[name] ? "border-red-500 focus:border-red-600 animate-pulse-red" : "border-gray-100 focus:border-black";
