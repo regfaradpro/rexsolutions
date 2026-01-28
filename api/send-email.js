@@ -2,26 +2,30 @@ import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, message: "Method not allowed" });
+    return res
+      .status(200)
+      .json({ ok: true, message: "API send-email is alive" });
   }
 
   try {
     const { name, email, phone, model, budget, delay } = req.body;
 
     if (!name || !email) {
-      return res.status(400).json({ ok: false, message: "Missing fields" });
+      return res.status(400).json({
+        ok: false,
+        message: "Missing required fields",
+      });
     }
 
     const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
-
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
 
     await transporter.sendMail({
       from: `"Rex Solutions" <${process.env.GMAIL_USER}>`,
