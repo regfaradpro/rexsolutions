@@ -184,7 +184,7 @@ const ImportExportDetail: React.FC = () => {
   try {
     await emailjs.send(
       "service_n77ztkj",          // Service ID (EmailJS)
-      "contact_us",               // Template ID
+      "template_k37iogn",               // Template ID
       {
         from_name: formData.nomComplet,
         from_email: formData.email,
@@ -194,7 +194,7 @@ const ImportExportDetail: React.FC = () => {
         delay_value: formData.delai,
         message: "Nouvelle demande via le formulaire Import / Export",
       },
-      "Gjglj_YGDZTs_O4d"           // Public Key
+      "jPFYREZuok-W4VCNC"           // Public Key
     );
 
     setIsSuccess(true);
