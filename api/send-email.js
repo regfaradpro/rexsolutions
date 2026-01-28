@@ -2,6 +2,7 @@
 import { GoogleGenAI } from "@google/genai";
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
+import fetch from "node-fetch";
 
 async function generateGeminiText(prompt) {
   const response = await fetch(
