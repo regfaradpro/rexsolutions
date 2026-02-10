@@ -15,7 +15,7 @@ export default async function handler(req: any, res: any) {
     }
 
     await resend.emails.send({
-      from: "Rex Solutions <onboarding@resend.dev>",
+      from: "onboarding@resend.dev",
       to: ["rexsolutionspro@gmail.com"],
       replyTo: email,
       subject: `Nouvelle demande de devis – ${sector}`,
