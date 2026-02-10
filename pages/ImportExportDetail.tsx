@@ -337,22 +337,24 @@ const ImportExportDetail: React.FC = () => {
         </section>
       )}
 
-      {/* Logos de marques */}
-      <section className="pb-24 pt-8 bg-white">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-80">
-            {BRAND_LOGOS.map((logo, i) => (
-              <div key={i} className="h-12 md:h-16 w-auto group transition-all duration-500">
-                <img 
-                  src={logo} 
-                  alt="Marque partenaire" 
-                  className="h-full w-auto object-contain transition-all duration-500 hover:scale-110" 
-                />
-              </div>
-            ))}
+      {/* Logos de marques - Uniquement affichés pour le secteur véhicules */}
+      {sector === 'vehicules' && (
+        <section className="pb-24 pt-8 bg-white">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-80">
+              {BRAND_LOGOS.map((logo, i) => (
+                <div key={i} className="h-12 md:h-16 w-auto group transition-all duration-500">
+                  <img 
+                    src={logo} 
+                    alt="Marque partenaire" 
+                    className="h-full w-auto object-contain transition-all duration-500 hover:scale-110" 
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Formulaire */}
       <section id="form-section" className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 scroll-mt-24">
