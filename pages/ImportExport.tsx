@@ -16,7 +16,7 @@ const ImportExport: React.FC = () => {
     },
     { 
       id: 'camions-citernes' as Sector, 
-      label: 'Citernes', 
+      label: 'Camion-Citerne', 
       icon: <Fuel className="h-8 w-8" />,
       desc: 'Logistique industrielle : camions-citernes pour hydrocarbures, eau et produits chimiques.',
       image: 'https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&q=80&w=1200'
