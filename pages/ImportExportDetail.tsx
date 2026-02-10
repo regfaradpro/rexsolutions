@@ -63,7 +63,7 @@ const SUV_REALISATIONS = [
   {
     image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770737557/byd_seal_u_03_gbnsbm.jpg",
     model: "BYD SEAL U",
-    submodel: "DESIGN SILVER PREMIUM • STUDIO EDITION",
+    submodel: "DESIGN SILVER PREMIUM SUN • STUDIO EDITION",
     description: "Le futur de la mobilité électrique premium. Design fluide et technologie de batterie révolutionnaire pour une autonomie étendue.",
     specs: { power: "313 CH", engine: "ELECTRIQUE", trans: "SINGLE" },
     tag: "PHOTO 2"
