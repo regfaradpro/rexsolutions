@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import emailjs from "@emailjs/browser";
 import { useParams, Link } from 'react-router-dom';
 import { Car, HardHat, Utensils, ArrowLeft, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle, Fuel, X } from 'lucide-react';
 
@@ -171,10 +170,6 @@ const ImportExportDetail: React.FC = () => {
   });
 
   useEffect(() => {
-    emailjs.init("Gjglj_YGDZTs_O4d");
-  }, []);
-
-  useEffect(() => {
     if (sector !== 'vehicules' && sector !== 'camions-citernes') return;
     const items = sector === 'vehicules' ? SUV_REALISATIONS : TANKER_REALISATIONS;
     const timer = setInterval(() => {
@@ -267,31 +262,37 @@ const ImportExportDetail: React.FC = () => {
   };
 
   const handleRequestQuote = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-    setIsSubmitting(true);
+  e.preventDefault();
+  if (!validateForm()) return;
 
-    try {
-      const templateParams = {
-        from_name: formData.nomComplet,
-        from_email: formData.email,
-        phone_number: `${formData.prefix} ${formData.telephone}`,
-        car_model: formData.modeleRecherche,
-        budget_value: formData.budget,
-        delay_value: formData.delai,
-        subject: `[${sectorData.title}] Devis - ${formData.nomComplet}`,
-        message: `Secteur: ${sectorData.title}\nBudget: ${formData.budget}\nDélai: ${formData.delai}\nRecherche: ${formData.modeleRecherche}`,
-      };
-      const result = await emailjs.send("service_n77ztkj", "contact_us", templateParams);
-      if (result.status === 200) setIsSuccess(true);
-      else throw new Error("Erreur serveur");
-    } catch (error: any) {
-      console.error(error);
-      alert("Erreur lors de l'envoi. Contactez-nous au +32 466 253 255.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  setIsSubmitting(true);
+
+  try {
+    const res = await fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: formData.nomComplet,
+        email: formData.email,
+        phone: `${formData.prefix} ${formData.telephone}`,
+        model: formData.modeleRecherche,
+        budget: formData.budget,
+        delay: formData.delai,
+        sector: sectorData.title
+      }),
+    });
+
+    if (!res.ok) throw new Error("Erreur API");
+
+    setIsSuccess(true);
+  } catch (error) {
+    console.error(error);
+    alert("Erreur lors de l’envoi. Contactez-nous au +32 466 253 255.");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   const selectCountry = (c: typeof COUNTRIES[0]) => {
     setFormData(prev => ({ ...prev, prefix: c.dial, prefixCode: c.code }));
