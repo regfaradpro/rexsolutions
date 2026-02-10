@@ -43,6 +43,14 @@ const BRAND_LOGOS = [
   "https://res.cloudinary.com/dupcar9en/image/upload/v1770738828/byd_p3lzk5.jpg"
 ];
 
+const TRUCK_BRAND_LOGOS = [
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770743810/volvo_bewshu.jpg",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770743809/scania_vgo323.jpg",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770743808/mercedes-benz_ia0vpj.jpg",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770743808/MAN_Truck___Bus_-_Logo.svg_hugeju.png",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770743807/freightliner_lxbjyp.png"
+];
+
 const SUV_REALISATIONS = [
   {
     image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770737558/RangeRoverSport_iuyioi.jpg",
@@ -104,25 +112,39 @@ const SUV_REALISATIONS = [
 
 const TANKER_REALISATIONS = [
   {
-    image: "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&q=80&w=1200",
-    model: "SCANIA G450",
-    submodel: "FUEL TRANSPORT • 38.000L",
-    description: "Semi-remorque citerne hydrocarbure haute sécurité. Conformité ADR totale.",
-    specs: { power: "450 CH", engine: "13L DIESEL", trans: "OPTICRUISE" }
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770743835/mercedes-benz-trucks_vovkse.jpg",
+    model: "MERCEDES-BENZ AROCS",
+    submodel: "TANKER PRO EDITION",
+    description: "Le fer de lance du transport de fluides. Conçu pour la robustesse et une efficacité opérationnelle maximale dans les environnements exigeants.",
+    specs: { power: "480 CH", engine: "OM 471", trans: "POWERSHIFT 3" }
   },
   {
-    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1200",
-    model: "MERCEDES AROCS",
-    submodel: "STAINLESS STEEL • WATER TANK",
-    description: "Citerne inox pour eau potable ou transport alimentaire. Châssis renforcé.",
-    specs: { power: "480 CH", engine: "OM 471", trans: "POWERSHIFT" }
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770743840/Volvo-trucks_k17xnh.jpg",
+    model: "VOLVO FH16",
+    submodel: "GLOBETROTTER TANKER",
+    description: "L'excellence suédoise pour vos transports longue distance. Sécurité active de pointe et confort de conduite inégalé pour le transport ADR.",
+    specs: { power: "750 CH", engine: "D16K", trans: "I-SHIFT" }
   },
   {
-    image: "https://images.unsplash.com/photo-1586191582056-b13c0516447c?auto=format&fit=crop&q=80&w=1200",
-    model: "VOLVO FMX",
-    submodel: "CHEMICAL CARRIER • ADR PLUS",
-    description: "Transport de produits chimiques dangereux. Systèmes de dépotage isolés.",
-    specs: { power: "500 CH", engine: "D13K", trans: "I-SHIFT" }
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770743839/Scania_poerpq.jpg",
+    model: "SCANIA R-SERIES",
+    submodel: "SUPER TANKER CONFIG",
+    description: "Efficacité énergétique record et fiabilité légendaire. Le choix privilégié pour le transport d'hydrocarbures haute intensité.",
+    specs: { power: "540 CH", engine: "DC13", trans: "OPTICRUISE" }
+  },
+  {
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770743837/Man-Trucks_hcquzh.webp",
+    model: "MAN TGX",
+    submodel: "EFFICIENTLINE TANK",
+    description: "Ingénierie allemande au service de la rentabilité. Un aérodynamisme optimisé pour une consommation réduite lors des livraisons industrielles.",
+    specs: { power: "510 CH", engine: "D26", trans: "MAN TipMatic" }
+  },
+  {
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770743836/Freightliner_mkyb6j.jpg",
+    model: "FREIGHTLINER CASCADIA",
+    submodel: "HEAVY DUTY TANKER",
+    description: "La puissance américaine adaptée aux besoins globaux. Une plateforme technologique avancée pour une disponibilité maximale.",
+    specs: { power: "505 CH", engine: "DETROIT DD15", trans: "DT12" }
   }
 ];
 
@@ -191,7 +213,7 @@ const ImportExportDetail: React.FC = () => {
     'camions-citernes': {
       title: 'Camions-Citernes',
       desc: 'Approvisionnement spécialisé en camions-citernes industriels. Hydrocarbures, eau potable, produits chimiques ou alimentaires : nous gérons la conformité ADR et l\'importation complète.',
-      image: 'https://images.unsplash.com/photo-1586191582056-b13c0516447c?auto=format&fit=crop&q=80&w=1920',
+      image: 'https://res.cloudinary.com/dupcar9en/image/upload/v1770743835/mercedes-benz-trucks_vovkse.jpg',
       icon: <Fuel className="h-12 w-12" />,
       formLabel: 'Type de citerne & Capacité (m³)',
       placeholder: 'ex: Citerne hydrocarbure 45.000L, Citerne inox alimentaire...',
@@ -337,12 +359,12 @@ const ImportExportDetail: React.FC = () => {
         </section>
       )}
 
-      {/* Logos de marques - Uniquement affichés pour le secteur véhicules */}
-      {sector === 'vehicules' && (
+      {/* Logos de marques - Uniquement affichés pour le secteur véhicules ou camions-citernes */}
+      {(sector === 'vehicules' || sector === 'camions-citernes') && (
         <section className="pb-24 pt-8 bg-white">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
             <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-80">
-              {BRAND_LOGOS.map((logo, i) => (
+              {(sector === 'vehicules' ? BRAND_LOGOS : TRUCK_BRAND_LOGOS).map((logo, i) => (
                 <div key={i} className="h-12 md:h-16 w-auto group transition-all duration-500">
                   <img 
                     src={logo} 
