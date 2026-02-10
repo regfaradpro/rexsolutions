@@ -112,7 +112,7 @@ const SUV_REALISATIONS = [
 
 const TANKER_REALISATIONS = [
   {
-    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770743835/mercedes-benz-trucks_vovkse.jpg",
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770745282/mercedes-benz-trucks_stawgy.jpg",
     model: "MERCEDES-BENZ AROCS",
     submodel: "TANKER PRO EDITION",
     description: "Le fer de lance du transport de fluides. Conçu pour la robustesse et une efficacité opérationnelle maximale dans les environnements exigeants.",
