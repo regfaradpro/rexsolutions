@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Car, HardHat, Utensils, ArrowLeft, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle } from 'lucide-react';
 
-// Liste des pays mondiaux pour le préfixe
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import emailjs from "@emailjs/browser";
+import { useParams, Link } from 'react-router-dom';
+import { Car, HardHat, Utensils, ArrowLeft, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle, Fuel, X } from 'lucide-react';
+
 const COUNTRIES = [
   { code: 'BE', name: 'Belgique', dial: '+32' },
   { code: 'FR', name: 'France', dial: '+33' },
@@ -32,41 +33,96 @@ const COUNTRIES = [
   { code: 'SA', name: 'Arabie Saoudite', dial: '+966' },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
+const BRAND_LOGOS = [
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770738837/LandRover_cdh408.jpg",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770738837/range_Rover_vb2ved.png",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770738834/nissan2_rumxu2.png",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770738832/mitsubishi_ndtchy.png",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770738831/merco2_uxqgkl.jpg",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770738829/initinity2_kyogg1.jpg",
+  "https://res.cloudinary.com/dupcar9en/image/upload/v1770738828/byd_p3lzk5.jpg"
+];
+
 const SUV_REALISATIONS = [
   {
-    image: "https://i.imgur.com/OAsOoJM.jpeg",
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770737558/RangeRoverSport_iuyioi.jpg",
     model: "RANGE ROVER",
-    submodel: "RED CARPET • EXCLUSIVE EDITION",
-    description: "Une configuration magistrale sur tapis rouge. Teinte gris anthracite et jantes forgées noires pour une élégance absolue lors de vos événements de prestige.",
-    specs: { power: "530 CH", engine: "V8 4.4L", trans: "AUTO 8" }
+    submodel: "DARK SHADOW • RED CARPET CONFIG",
+    description: "Présentation exclusive sur tapis rouge. Finition full black satinée et jantes forgées. Un sourcing direct pour une présence diplomatique inégalée.",
+    specs: { power: "530 CH", engine: "V8 4.4L", trans: "AUTO 8" },
+    tag: "PHOTO 1"
   },
   {
-    image: "https://i.imgur.com/wNUwC4G.jpeg",
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770737557/byd_seal_u_03_gbnsbm.jpg",
     model: "BYD SEAL U",
-    submodel: "PURE ELECTRIC • DESIGN SILVER",
-    description: "L'excellence technologique chinoise importée en Belgique. Un SUV 100% électrique alliant confort premium et autonomie record.",
-    specs: { power: "313 CH", engine: "ELECTRIQUE", trans: "SINGLE" }
+    submodel: "DESIGN SILVER • STUDIO EDITION",
+    description: "Le futur de la mobilité électrique premium. Design fluide et technologie de batterie révolutionnaire pour une autonomie étendue.",
+    specs: { power: "313 CH", engine: "ELECTRIQUE", trans: "SINGLE" },
+    tag: "PHOTO 2"
   },
   {
-    image: "https://i.imgur.com/UsmE1wP.jpeg",
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770737558/MG63AMG2_f311qk.jpg",
     model: "MERCEDES G-CLASS",
-    submodel: "KLASSEN PERFORMANCE • NIGHT PACK",
-    description: "Préparation exclusive Klassen sur base de G63 AMG. Un monstre de puissance à la finition nocturne irréprochable.",
-    specs: { power: "585 CH", engine: "V8 BITURBO", trans: "AMG SPEED" }
+    submodel: "KLASSEN NIGHT EDITION",
+    description: "La G-Wagon AMG dans sa version la plus radicale. Préparation nocturne avec éclairage LED adaptatif et signature Klassen.",
+    specs: { power: "585 CH", engine: "V8 BITURBO", trans: "AMG SPEED" },
+    tag: "PHOTO 3"
   },
   {
-    image: "https://i.imgur.com/NG0BlBO.jpeg",
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770737557/Discovery_wzoa4s.jpg",
     model: "LAND ROVER DISCOVERY",
-    submodel: "R-DYNAMIC • SNOW WHITE",
-    description: "Le SUV familial par excellence. Polyvalence extrême et design épuré pour ce modèle 7 places prêt pour l'aventure.",
-    specs: { power: "300 CH", engine: "L6 MHEV", trans: "ZF 8HP" }
+    submodel: "R-DYNAMIC WHITE EDITION",
+    description: "L'élégance polyvalente devant le showroom. Un espace généreux allié à des capacités de franchissement record.",
+    specs: { power: "300 CH", engine: "L6 HYBRID", trans: "ZF 8HP" },
+    tag: "PHOTO 5"
   },
   {
-    image: "https://i.imgur.com/vYwCxfF.jpeg",
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770737557/LandCruiser_ajmaq1.jpg",
     model: "TOYOTA PRADO",
-    submodel: "BLACK SERIES • TXL PACK",
-    description: "Robustesse légendaire et fiabilité sans faille. Le compagnon idéal pour les missions exigeantes et les longs trajets.",
-    specs: { power: "204 CH", engine: "2.8L DIESEL", trans: "AUTO 6" }
+    submodel: "TXL BLACK MOUNTAIN",
+    description: "L'équilibre parfait entre robustesse et confort. Une silhouette imposante pour une efficacité redoutable sur tous terrains.",
+    specs: { power: "204 CH", engine: "2.8L DIESEL", trans: "AUTO 6" },
+    tag: "PHOTO 6"
+  },
+  {
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770737558/Range_Rover_swytg7.jpg",
+    model: "RANGE ROVER SPORT",
+    submodel: "DYNAMIC SE WHITE",
+    description: "Lignes épurées et sportivité affirmée. Importation certifiée avec historique complet. Le SUV dynamique par excellence.",
+    specs: { power: "440 CH", engine: "L6 HYBRID", trans: "AUTO 8" },
+    tag: "PHOTO 7"
+  },
+  {
+    image: "https://res.cloudinary.com/dupcar9en/image/upload/v1770737557/2025_Nissan_X-Trail_Nismo_Advanced_Package_e-4ORCE_loiduk.jpg",
+    model: "NISSAN X-TRAIL NISMO",
+    submodel: "PERFORMANCE GREY • RED ACCENTS",
+    description: "L'ADN de compétition Nismo appliqué au SUV. Look agressif avec pack aérodynamique et détails rouges signature.",
+    specs: { power: "213 CH", engine: "E-POWER", trans: "E-4ORCE" },
+    tag: "PHOTO 8"
+  }
+];
+
+const TANKER_REALISATIONS = [
+  {
+    image: "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&q=80&w=1200",
+    model: "SCANIA G450",
+    submodel: "FUEL TRANSPORT • 38.000L",
+    description: "Semi-remorque citerne hydrocarbure haute sécurité. Conformité ADR totale.",
+    specs: { power: "450 CH", engine: "13L DIESEL", trans: "OPTICRUISE" }
+  },
+  {
+    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1200",
+    model: "MERCEDES AROCS",
+    submodel: "STAINLESS STEEL • WATER TANK",
+    description: "Citerne inox pour eau potable ou transport alimentaire. Châssis renforcé.",
+    specs: { power: "480 CH", engine: "OM 471", trans: "POWERSHIFT" }
+  },
+  {
+    image: "https://images.unsplash.com/photo-1586191582056-b13c0516447c?auto=format&fit=crop&q=80&w=1200",
+    model: "VOLVO FMX",
+    submodel: "CHEMICAL CARRIER • ADR PLUS",
+    description: "Transport de produits chimiques dangereux. Systèmes de dépotage isolés.",
+    specs: { power: "500 CH", engine: "D13K", trans: "I-SHIFT" }
   }
 ];
 
@@ -93,9 +149,14 @@ const ImportExportDetail: React.FC = () => {
   });
 
   useEffect(() => {
-    if (sector !== 'vehicules') return;
+    emailjs.init("Gjglj_YGDZTs_O4d");
+  }, []);
+
+  useEffect(() => {
+    if (sector !== 'vehicules' && sector !== 'camions-citernes') return;
+    const items = sector === 'vehicules' ? SUV_REALISATIONS : TANKER_REALISATIONS;
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev === SUV_REALISATIONS.length - 1 ? 0 : prev + 1));
+      setCurrentSlide((prev) => (prev === items.length - 1 ? 0 : prev + 1));
     }, 7000);
     return () => clearInterval(timer);
   }, [sector]);
@@ -124,7 +185,17 @@ const ImportExportDetail: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1920',
       icon: <Car className="h-12 w-12" />,
       formLabel: 'Modèle de SUV recherché',
-      placeholder: 'ex: Land Cruiser 300 V6, Range Rover Sport...'
+      placeholder: 'ex: Land Cruiser 300 V6, Range Rover Sport...',
+      gallery: SUV_REALISATIONS
+    },
+    'camions-citernes': {
+      title: 'Camions-Citernes',
+      desc: 'Approvisionnement spécialisé en camions-citernes industriels. Hydrocarbures, eau potable, produits chimiques ou alimentaires : nous gérons la conformité ADR et l\'importation complète.',
+      image: 'https://images.unsplash.com/photo-1586191582056-b13c0516447c?auto=format&fit=crop&q=80&w=1920',
+      icon: <Fuel className="h-12 w-12" />,
+      formLabel: 'Type de citerne & Capacité (m³)',
+      placeholder: 'ex: Citerne hydrocarbure 45.000L, Citerne inox alimentaire...',
+      gallery: TANKER_REALISATIONS
     },
     materiaux: {
       title: 'Pôle Matériaux',
@@ -132,7 +203,8 @@ const ImportExportDetail: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&q=80&w=1920',
       icon: <HardHat className="h-12 w-12" />,
       formLabel: 'Type et quantité de matériaux',
-      placeholder: 'ex: 100 tonnes d\'acier structurel, bois de charpente'
+      placeholder: 'ex: 100 tonnes d\'acier structurel, bois de charpente',
+      gallery: null
     },
     alimentation: {
       title: 'Pôle Alimentation',
@@ -140,7 +212,8 @@ const ImportExportDetail: React.FC = () => {
       image: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&q=80&w=1920',
       icon: <Utensils className="h-12 w-12" />,
       formLabel: 'Type de produits et spécificités (Frais, sec, bio)',
-      placeholder: 'ex: Riz Basmati, 20 containers, certification Bio'
+      placeholder: 'ex: Riz Basmati, 20 containers, certification Bio',
+      gallery: null
     }
   }[sector as string] || null;
 
@@ -149,7 +222,6 @@ const ImportExportDetail: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
     if (errors[name]) {
       setErrors(prev => {
         const next = { ...prev };
@@ -163,60 +235,50 @@ const ImportExportDetail: React.FC = () => {
   const validateForm = () => {
     const newErrors: Record<string, boolean> = {};
     const required = ['nomComplet', 'email', 'telephone', 'modeleRecherche', 'budget', 'delai'];
-    
     required.forEach(field => {
       if (!formData[field as keyof typeof formData]?.toString().trim()) {
         newErrors[field] = true;
       }
     });
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleRequestQuote = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!validateForm()) return;
+    e.preventDefault();
+    if (!validateForm()) return;
+    setIsSubmitting(true);
 
-  setIsSubmitting(true);
+    try {
+      const templateParams = {
+        from_name: formData.nomComplet,
+        from_email: formData.email,
+        phone_number: `${formData.prefix} ${formData.telephone}`,
+        car_model: formData.modeleRecherche,
+        budget_value: formData.budget,
+        delay_value: formData.delai,
+        subject: `[${sectorData.title}] Devis - ${formData.nomComplet}`,
+        message: `Secteur: ${sectorData.title}\nBudget: ${formData.budget}\nDélai: ${formData.delai}\nRecherche: ${formData.modeleRecherche}`,
+      };
+      const result = await emailjs.send("service_n77ztkj", "contact_us", templateParams);
+      if (result.status === 200) setIsSuccess(true);
+      else throw new Error("Erreur serveur");
+    } catch (error: any) {
+      console.error(error);
+      alert("Erreur lors de l'envoi. Contactez-nous au +32 466 253 255.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-  try {
-    const response = await fetch("/api/send-email", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: formData.nomComplet,
-    email: formData.email,
-    phone: `${formData.prefix} ${formData.telephone}`,
-    model: formData.modeleRecherche,
-    budget: formData.budget,
-    delay: formData.delai,
-  }),
-});
-
-if (!response.ok) {
-  throw new Error("Email failed");
-}
-
-setIsSuccess(true);
-
-
-    setIsSuccess(true);
-  } catch (error) {
-    console.error("Resend error:", error);
-    alert(
-      "Impossible d'envoyer la demande pour le moment. Veuillez réessayer ou nous contacter au +32 466 253 255."
-    );
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
+  const selectCountry = (c: typeof COUNTRIES[0]) => {
+    setFormData(prev => ({ ...prev, prefix: c.dial, prefixCode: c.code }));
+    setIsDropdownOpen(false);
+    setSearchQuery('');
+  };
 
   const inputBaseClass = "w-full py-3 bg-transparent border-b-2 outline-none transition-all font-medium text-base";
-  const getInputBorder = (name: string) => errors[name] ? "border-red-500 focus:border-red-600 animate-pulse-red" : "border-gray-100 focus:border-black";
+  const getInputBorder = (name: string) => errors[name] ? "border-red-500 animate-pulse-red" : "border-gray-100 focus:border-black";
   const getLabelColor = (name: string) => errors[name] ? "text-red-500" : "text-gray-400";
 
   return (
@@ -225,7 +287,6 @@ setIsSuccess(true);
       <section className="relative h-[70vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src={sectorData.image} className="w-full h-full object-cover grayscale opacity-60 scale-105" alt={sectorData.title} />
-          {/* Strengthened gradient for readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/60 to-white/20"></div>
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full pt-20 text-white">
@@ -236,8 +297,7 @@ setIsSuccess(true);
             <div className="w-16 h-16 bg-white text-black rounded-2xl flex items-center justify-center mb-8 shadow-2xl">
               {sectorData.icon}
             </div>
-            {/* Added shadow for maximum legibility */}
-            <h1 className="text-4xl md:text-[5.5rem] font-black tracking-tighter uppercase leading-[0.85] mb-6 animate-in slide-in-from-bottom-10 drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">
+            <h1 className="text-4xl md:text-[5.5rem] font-black tracking-tighter uppercase leading-[0.85] mb-6 drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">
               {sectorData.title}
             </h1>
             <p className="text-lg md:text-2xl text-gray-100 font-light max-w-2xl leading-relaxed drop-shadow-md opacity-90">
@@ -247,20 +307,20 @@ setIsSuccess(true);
         </div>
       </section>
 
-      {/* Galeries SUV */}
-      {sector === 'vehicules' && (
-        <section className="py-24 bg-white">
+      {/* Galerie Dynamique */}
+      {sectorData.gallery && (
+        <section className="py-20 bg-white">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase text-center mb-16 text-gray-900">NOS RÉALISATIONS</h2>
-            <div className="relative h-[650px] md:h-[800px] rounded-[3rem] overflow-hidden bg-black shadow-2xl">
-              {SUV_REALISATIONS.map((real, idx) => (
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase text-center mb-12 text-gray-900">NOS RÉALISATIONS</h2>
+            <div className="relative h-[500px] md:h-[650px] rounded-[3rem] overflow-hidden bg-black shadow-2xl">
+              {sectorData.gallery.map((real: any, idx: number) => (
                 <div key={idx} className={`absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${idx === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
                   <img src={real.image} className={`w-full h-full object-cover transition-all duration-[10000ms] ${idx === currentSlide ? 'scale-110' : 'scale-100'}`} alt={real.model} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                  <div className="absolute inset-0 p-8 md:p-20 flex flex-col justify-end">
-                    <h3 className="text-3xl md:text-6xl font-black text-white uppercase mb-2 drop-shadow-lg">{real.model}</h3>
-                    <h4 className="text-xl md:text-3xl font-black text-white/70 uppercase mb-8 drop-shadow-md">{real.submodel}</h4>
-                    <div className="grid grid-cols-3 gap-8 pt-10 border-t border-white/20">
+                  <div className="absolute inset-0 p-8 md:p-14 flex flex-col justify-end">
+                    <h3 className="text-3xl md:text-5xl font-black text-white uppercase mb-1 drop-shadow-lg">{real.model}</h3>
+                    <h4 className="text-xl md:text-2xl font-black text-white/70 uppercase mb-6 drop-shadow-md">{real.submodel}</h4>
+                    <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/20">
                       <div><p className="text-[10px] font-black text-white/50 uppercase mb-1 tracking-widest">Puissance</p><p className="text-white font-bold">{real.specs.power}</p></div>
                       <div><p className="text-[10px] font-black text-white/50 uppercase mb-1 tracking-widest">Moteur</p><p className="text-white font-bold">{real.specs.engine}</p></div>
                       <div><p className="text-[10px] font-black text-white/50 uppercase mb-1 tracking-widest">Boîte</p><p className="text-white font-bold">{real.specs.trans}</p></div>
@@ -269,154 +329,138 @@ setIsSuccess(true);
                 </div>
               ))}
               <div className="absolute right-8 bottom-8 z-30 flex items-center gap-4">
-                <button onClick={() => setCurrentSlide(prev => (prev === 0 ? SUV_REALISATIONS.length - 1 : prev - 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronLeft className="h-5 w-5"/></button>
-                <button onClick={() => setCurrentSlide(prev => (prev === SUV_REALISATIONS.length - 1 ? 0 : prev + 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronRight className="h-5 w-5"/></button>
+                <button onClick={() => setCurrentSlide(prev => (prev === 0 ? sectorData.gallery!.length - 1 : prev - 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronLeft className="h-5 w-5"/></button>
+                <button onClick={() => setCurrentSlide(prev => (prev === sectorData.gallery!.length - 1 ? 0 : prev + 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronRight className="h-5 w-5"/></button>
               </div>
             </div>
           </div>
         </section>
       )}
 
+      {/* Logos de marques */}
+      <section className="pb-24 pt-8 bg-white">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-80">
+            {BRAND_LOGOS.map((logo, i) => (
+              <div key={i} className="h-12 md:h-16 w-auto group transition-all duration-500">
+                <img 
+                  src={logo} 
+                  alt="Marque partenaire" 
+                  className="h-full w-auto object-contain transition-all duration-500 hover:scale-110" 
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Formulaire */}
       <section id="form-section" className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 scroll-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-          {/* Processus */}
           <div className="lg:col-span-5 space-y-12">
-            <div>
-              <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 text-gray-900">Processus d'Importation</h2>
-              <div className="space-y-8">
-                {[
-                  { n: '01', t: 'Briefing Client', d: 'Remplissez le formulaire avec vos critères précis.' },
-                  { n: '02', t: 'Sourcing & Audit', d: 'Rex Solutions identifie les meilleures opportunités mondiales.' },
-                  { n: '03', t: 'Logistique VIP', d: 'Gestion du transport sécurisé jusqu\'à votre porte.' },
-                ].map((step) => (
-                  <div key={step.n} className="flex gap-6 group">
-                    <span className="text-5xl font-black text-gray-100 group-hover:text-black transition-colors">{step.n}</span>
-                    <div><h4 className="font-bold text-xl mb-1 text-gray-900">{step.t}</h4><p className="text-gray-500 text-sm leading-relaxed">{step.d}</p></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="bg-black text-white p-10 rounded-[3rem] shadow-2xl border border-white/5">
-              <h3 className="text-xs font-black uppercase tracking-widest text-white/40 mb-6 tracking-[0.4em]">Garanties Rex Solutions</h3>
-              <ul className="space-y-4">
-                {["Certificats de non-accidentologie", "Historique complet constructeur", "Frais optimisés", "Livraison confidentielle"].map((g, i) => (
-                  <li key={i} className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em]"><ShieldCheck className="h-5 w-5 text-white/60" /> {g}</li>
-                ))}
-              </ul>
+            <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 text-gray-900">Processus Rex Solutions</h2>
+            <div className="space-y-8">
+              {[
+                { n: '01', t: 'Briefing Client', d: 'Analyse précise de vos besoins industriels ou de prestige.' },
+                { n: '02', t: 'Sourcing Expert', d: 'Rex Solutions identifie les opportunités mondiales certifiées.' },
+                { n: '03', t: 'Logistique VIP', d: 'Transport sécurisé et dédouanement complet par nos soins.' },
+              ].map((step) => (
+                <div key={step.n} className="flex gap-6 group">
+                  <span className="text-5xl font-black text-gray-100 group-hover:text-black transition-colors">{step.n}</span>
+                  <div><h4 className="font-bold text-xl mb-1 text-gray-900">{step.t}</h4><p className="text-gray-500 text-sm leading-relaxed">{step.d}</p></div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Formulaire */}
           <div className="lg:col-span-7">
             <div className={`bg-white rounded-[3.5rem] p-8 md:p-14 shadow-2xl border transition-all duration-500 ${isSuccess ? 'border-green-400 bg-green-50/20' : 'border-gray-100'}`}>
-              <h2 className="text-2xl font-black mb-10 uppercase tracking-tight text-gray-900">Dossier de Recherche</h2>
+              <h2 className="text-2xl font-black mb-10 uppercase tracking-tight text-gray-900">Demande de devis</h2>
               <form onSubmit={handleRequestQuote} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
-                    <label className={`text-[9px] font-black uppercase tracking-widest transition-colors ${getLabelColor('nomComplet')}`}>Nom Complet</label>
+                    <label className={`text-[9px] font-black uppercase tracking-widest ${getLabelColor('nomComplet')}`}>Nom Complet</label>
                     <input type="text" name="nomComplet" value={formData.nomComplet} onChange={handleInputChange} placeholder="Jean Dupont" className={`${inputBaseClass} ${getInputBorder('nomComplet')}`} />
                   </div>
                   <div className="space-y-2">
-                    <label className={`text-[9px] font-black uppercase tracking-widest transition-colors ${getLabelColor('email')}`}>Email Direct</label>
+                    <label className={`text-[9px] font-black uppercase tracking-widest ${getLabelColor('email')}`}>Email Direct</label>
                     <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="contact@pro.be" className={`${inputBaseClass} ${getInputBorder('email')}`} />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2 relative" ref={dropdownRef}>
-                    <label className={`text-[9px] font-black uppercase tracking-widest transition-colors ${getLabelColor('telephone')}`}>Téléphone Mobile</label>
+                    <label className={`text-[9px] font-black uppercase tracking-widest ${getLabelColor('telephone')}`}>Téléphone Mobile</label>
                     <div className="flex gap-2">
-                      <div onClick={() => !isSuccess && setIsDropdownOpen(!isDropdownOpen)} className={`w-[110px] flex items-center justify-between border-b-2 py-3 cursor-pointer transition-all ${errors.telephone ? 'border-red-500' : 'border-gray-100 hover:border-black'}`}>
+                      <div onClick={() => !isSuccess && setIsDropdownOpen(!isDropdownOpen)} className={`w-[110px] flex items-center justify-between border-b-2 py-3 cursor-pointer ${errors.telephone ? 'border-red-500' : 'border-gray-100 hover:border-black'}`}>
                         <div className="flex items-center gap-2">
                           <img src={`https://flagcdn.com/w40/${formData.prefixCode.toLowerCase()}.png`} className="h-3 w-5 object-cover rounded-sm shadow-sm" alt="Flag" />
                           <span className="text-sm font-bold">{formData.prefix}</span>
                         </div>
-                        <ChevronDown className={`h-3 w-3 text-gray-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`h-3 w-3 text-gray-400 ${isDropdownOpen ? 'rotate-180' : ''}`} />
                       </div>
-                      <input type="tel" name="telephone" value={formData.telephone} onChange={handleInputChange} placeholder="000 00 00 00" className={`flex-1 ${inputBaseClass} ${getInputBorder('telephone')}`} />
+                      
+                      {/* Country Dropdown List */}
                       {isDropdownOpen && (
-                        <div className="absolute top-full left-0 w-full md:w-[280px] bg-white mt-2 rounded-2xl shadow-2xl border border-gray-100 z-[100] animate-in fade-in slide-in-from-top-2">
-                          <div className="p-3 border-b border-gray-50 flex items-center gap-2">
+                        <div className="absolute top-[100%] left-0 w-[280px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[100] mt-2 animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
+                          <div className="p-4 border-b border-gray-50 flex items-center gap-3 bg-gray-50/50">
                             <Search className="h-4 w-4 text-gray-400" />
-                            <input type="text" placeholder="Rechercher un pays..." className="w-full text-xs outline-none bg-transparent" autoFocus value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                            <input 
+                              type="text" 
+                              placeholder="Rechercher un pays..." 
+                              className="w-full bg-transparent outline-none text-sm font-bold"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              autoFocus
+                            />
+                            {searchQuery && <button onClick={() => setSearchQuery('')}><X className="h-3 w-3 text-gray-400"/></button>}
                           </div>
-                          <div className="max-h-[300px] overflow-y-auto custom-scrollbar p-2">
-                            {filteredCountries.map(c => (
-                              <div key={c.code} onClick={() => { setFormData(prev => ({ ...prev, prefix: c.dial, prefixCode: c.code })); setIsDropdownOpen(false); setSearchQuery(''); }} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 cursor-pointer transition-colors group">
+                          <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
+                            {filteredCountries.map((c) => (
+                              <div 
+                                key={c.code} 
+                                onClick={() => selectCountry(c)}
+                                className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors group"
+                              >
                                 <div className="flex items-center gap-3">
-                                  <img src={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png`} className="h-4 w-6 object-cover rounded-sm" alt={c.name} />
-                                  <span className="text-xs font-bold text-gray-700">{c.name}</span>
+                                  <img src={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png`} className="h-3 w-5 object-cover rounded-sm shadow-sm" alt={c.name} />
+                                  <span className="text-sm font-bold text-gray-700 group-hover:text-black">{c.name}</span>
                                 </div>
-                                <span className="text-[10px] font-black text-gray-400 group-hover:text-black">{c.dial}</span>
+                                <span className="text-xs font-black text-gray-400 group-hover:text-black">{c.dial}</span>
                               </div>
                             ))}
+                            {filteredCountries.length === 0 && (
+                              <div className="p-8 text-center text-xs font-bold text-gray-400 uppercase tracking-widest italic">Aucun pays trouvé</div>
+                            )}
                           </div>
                         </div>
                       )}
+
+                      <input type="tel" name="telephone" value={formData.telephone} onChange={handleInputChange} placeholder="000 00 00 00" className={`flex-1 ${inputBaseClass} ${getInputBorder('telephone')}`} />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className={`text-[9px] font-black uppercase tracking-widest transition-colors ${getLabelColor('modeleRecherche')}`}>{sectorData.formLabel}</label>
+                    <label className={`text-[9px] font-black uppercase tracking-widest ${getLabelColor('modeleRecherche')}`}>{sectorData.formLabel}</label>
                     <input type="text" name="modeleRecherche" value={formData.modeleRecherche} onChange={handleInputChange} placeholder={sectorData.placeholder} className={`${inputBaseClass} ${getInputBorder('modeleRecherche')}`} />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
-                    <label className={`text-[9px] font-black uppercase tracking-widest transition-colors ${getLabelColor('budget')}`}>Budget (€)</label>
-                    <input type="text" name="budget" value={formData.budget} onChange={handleInputChange} placeholder="ex: 120.000 €" className={`${inputBaseClass} ${getInputBorder('budget')}`} />
+                    <label className={`text-[9px] font-black uppercase tracking-widest ${getLabelColor('budget')}`}>Budget Estimatif</label>
+                    <input type="text" name="budget" value={formData.budget} onChange={handleInputChange} placeholder="ex: 85.000 €" className={`${inputBaseClass} ${getInputBorder('budget')}`} />
                   </div>
                   <div className="space-y-2">
-                    <label className={`text-[9px] font-black uppercase tracking-widest transition-colors ${getLabelColor('delai')}`}>Délai souhaité</label>
-                    <input type="text" name="delai" value={formData.delai} onChange={handleInputChange} placeholder="ex: Sous 30 jours" className={`${inputBaseClass} ${getInputBorder('delai')}`} />
+                    <label className={`text-[9px] font-black uppercase tracking-widest ${getLabelColor('delai')}`}>Délai de Livraison</label>
+                    <input type="text" name="delai" value={formData.delai} onChange={handleInputChange} placeholder="ex: Sous 2 mois" className={`${inputBaseClass} ${getInputBorder('delai')}`} />
                   </div>
                 </div>
 
-                {Object.keys(errors).length > 0 && (
-                  <div className="flex items-center gap-2 text-red-500 animate-in fade-in slide-in-from-top-1">
-                    <AlertCircle className="h-4 w-4" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Veuillez remplir tous les champs marqués en rouge</span>
-                  </div>
-                )}
-
                 <div className="pt-6">
-                  <button 
-                    disabled={isSubmitting} 
-                    type="submit" 
-                    className={`w-full py-5 font-black rounded-2xl transition-all flex items-center justify-center gap-3 shadow-xl active:scale-[0.98] ${
-                      isSuccess 
-                        ? 'bg-green-600 text-white cursor-default' 
-                        : 'bg-black text-white hover:bg-gray-800 disabled:bg-gray-400'
-                    }`}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                        <span>ENVOI EN COURS...</span>
-                      </>
-                    ) : isSuccess ? (
-                      <>
-                        <CheckCircle2 className="h-5 w-5" />
-                        <span>DEMANDE TRANSMISE !</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-5 w-5" />
-                        <span>DEMANDER LE DEVIS</span>
-                      </>
-                    )}
+                  <button disabled={isSubmitting} type="submit" className={`w-full py-5 font-black rounded-2xl transition-all flex items-center justify-center gap-3 shadow-xl ${isSuccess ? 'bg-green-600 text-white' : 'bg-black text-white hover:bg-gray-800'}`}>
+                    {isSubmitting ? <><Loader2 className="h-5 w-5 animate-spin" /><span>TRAITEMENT...</span></> : isSuccess ? <><CheckCircle2 className="h-5 w-5" /><span>DEMANDE TRANSMISE !</span></> : <><Send className="h-5 w-5" /><span>DEMANDER LE DEVIS</span></>}
                   </button>
-                  
-                  {isSuccess && (
-                    <div className="mt-8 text-center animate-in fade-in slide-in-from-top-4">
-                      <p className="text-gray-700 text-sm font-medium leading-relaxed">
-                        Merci pour votre confiance ! <br/>
-                        Votre dossier de recherche a été transmis avec succès. <br/>
-                        <span className="text-black font-bold">Faradji Régis</span> (Gérant - Rex Solutions) traitera votre demande sous <span className="underline decoration-green-500 decoration-2">24 heures</span>.
-                      </p>
-                    </div>
-                  )}
+                  {isSuccess && <div className="mt-8 text-center text-sm font-medium text-gray-700">Faradji Régis (Gérant) traitera votre demande sous 24h.</div>}
                 </div>
               </form>
             </div>
@@ -425,18 +469,11 @@ setIsSuccess(true);
       </section>
 
       <style>{`
+        @keyframes pulse-red { 0%, 100% { border-color: #ef4444; } 50% { border-color: #fca5a5; } }
+        .animate-pulse-red { animation: pulse-red 2s infinite; }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #000; }
-        
-        @keyframes pulse-red {
-          0%, 100% { border-color: #ef4444; }
-          50% { border-color: #fca5a5; }
-        }
-        .animate-pulse-red {
-          animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #000; border-radius: 10px; }
       `}</style>
     </div>
   );
