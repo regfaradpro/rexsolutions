@@ -22,7 +22,7 @@ export default async function handler(req: any, res: any) {
     }
 
     await resend.emails.send({
-      from: "Rex Solutions <contact@rexsolutions.be>", // ⚠️ domaine vérifié recommandé
+      from: "onboarding@resend.dev", // ⚠️ domaine vérifié recommandé
       to: ["rexsolutionspro@gmail.com"],
       replyTo: email,
       subject: `Nouvelle demande matériaux – ${nomComplet}`,
