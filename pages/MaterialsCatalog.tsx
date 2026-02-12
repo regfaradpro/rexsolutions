@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 /* Added X for the close button in the zoom modal */
 import { Search, ChevronRight, Star, Truck, MapPin, Filter, ArrowUpDown, ChevronDown, Check, Package, Info, ArrowLeft, Shield, X } from 'lucide-react';
@@ -634,7 +635,7 @@ const MaterialsCatalog: React.FC = () => {
                             Livraison {p.delivery}
                           </div>
                         </div>
-                        <Link to="/import-export/materiaux" className="bg-black text-white p-3 rounded-xl hover:bg-gray-800 transition-all shadow-lg active:scale-95 group/btn flex items-center gap-2">
+                        <Link to="/import-export/materiaux#devis-form" className="bg-black text-white p-3 rounded-xl hover:bg-gray-800 transition-all shadow-lg active:scale-95 group/btn flex items-center gap-2">
                           <span className="hidden group-hover:block text-[10px] font-black uppercase tracking-widest pl-2">Devis</span>
                           <Package className="h-5 w-5 group-hover/btn:scale-110 transition-transform" />
                         </Link>

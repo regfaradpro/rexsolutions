@@ -380,7 +380,7 @@ const ImportExportDetail: React.FC = () => {
       )}
 
       {/* Formulaire */}
-      <section id="form-section" className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 scroll-mt-24">
+      <section id="devis-form" className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 scroll-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           <div className="lg:col-span-5 space-y-12">
             <h2 className="text-3xl font-black uppercase tracking-tighter mb-8 text-gray-900">Processus Rex Solutions</h2>
