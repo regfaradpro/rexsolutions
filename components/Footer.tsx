@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
             <div className="space-y-6">
               <a href="mailto:rexsolutionspro@gmail.com" className="block group">
                 <p className="text-[10px] font-bold text-gray-600 uppercase mb-1">Email Expertise</p>
-                <p className="text-white group-hover:text-gray-300 transition-colors font-medium">rexsolutionspro@gmail.com</p>
+                <p className="text-[10px] font-bold text-white uppercase tracking-widest">rexsolutionspro@gmail.com</p>
               </a>
               <p className="text-[10px] font-bold text-gray-600 uppercase mb-1">Ligne Directes</p>
               <a href="tel:+32466253255" className="group">
@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
                       MANAGING DIRECTOR
                     </span>
                   </div>
-                  <span className="text-white font-medium group-hover:text-gray-300 transition-colors">
+                  <span className="text-[10px] font-bold text-white uppercase tracking-widest">
                     +32 466 253 255
                   </span>
                 </div>
@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
                       BUSINESS MANAGER
                     </span>
                   </div>
-                  <span className="text-white font-medium group-hover:text-gray-300 transition-colors">
+                  <span className="text-[10px] font-bold text-white uppercase tracking-widest">
                     +32 465 710 189
                   </span>
                 </div>

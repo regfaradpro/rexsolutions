@@ -56,12 +56,6 @@ const Home: React.FC = () => {
             <p className="text-xl text-gray-300 mb-10 leading-relaxed">
               Rex Solutions : Votre partenaire multiservice en Belgique. Expertise, innovation et fiabilité dans le commerce, la consultance, le transport et l'import-export multisectoriel.
             </p>
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link to="/abonnements" className="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-bold rounded-md hover:bg-gray-200 transition-all text-lg shadow-xl group">
-                Découvrir nos offres
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
           </div>
         </div>
       </section>
@@ -108,15 +102,11 @@ const Home: React.FC = () => {
       <section className="py-24 bg-gray-50 border-y border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-16">
           <div className="md:w-1/2">
-            <h2 className="text-4xl font-extrabold text-gray-900 mb-6">Rex Solutions</h2>
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-6">Qui sommes-nous ? Notre Mission</h2>
             <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              Basée en Belgique, Rex Solutions est dirigée par Faradji Régis. Notre mission est de fournir des services de haute qualité par abonnement, alliant la flexibilité numérique et l'expertise opérationnelle multisectorielle.
+              Basée en Belgique, Rex Solutions est une société composée d'un Managing Director, un Business Manager et un Associate Manager. Ensemble, notre mission est de fournir des services de haute qualité, alliant la flexibilité numérique et l'expertise opérationnelle multisectorielle.
             </p>
             <div className="grid grid-cols-2 gap-6">
-              <div className="p-4 bg-white rounded-lg shadow-sm">
-                <p className="text-2xl font-bold text-black">TVA</p>
-                <p className="text-xs text-gray-500 uppercase font-semibold">BE1020.913.716</p>
-              </div>
               <div className="p-4 bg-white rounded-lg shadow-sm">
                 <p className="text-2xl font-bold text-black">100%</p>
                 <p className="text-xs text-gray-500 uppercase font-semibold">Savoir-faire Belge</p>
