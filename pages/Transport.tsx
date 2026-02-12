@@ -53,24 +53,58 @@ const Transport: React.FC = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulation d'envoi vers l'API Rex Solutions
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const res = await fetch("/api/send-transport-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nomComplet: formData.nomComplet,
+          email: formData.email,
+          phone: `${formData.prefix} ${formData.telephone}`,
+          marchandise: formData.marchandise,
+          depart: formData.depart,
+          destination: formData.destination,
+          date: formData.date,
+          details: formData.details,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Erreur API");
+      }
+
       setIsSuccess(true);
+
       setTimeout(() => {
-        setIsSuccess(false);
         setFormData({
-          nomComplet: '', email: '', prefix: '+32', prefixCode: 'BE',
-          telephone: '', marchandise: '', depart: '', destination: '',
-          date: '', details: ''
+          nomComplet: '',
+          email: '',
+          prefix: '+32',
+          prefixCode: 'BE',
+          telephone: '',
+          marchandise: '',
+          depart: '',
+          destination: '',
+          date: '',
+          details: ''
         });
+        setIsSuccess(false);
       }, 5000);
-    }, 1500);
+
+    } catch (error) {
+      console.error(error);
+      alert("Erreur lors de l’envoi. Contactez-nous à rexsolutionspro@gmail.com.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <div className="animate-in fade-in duration-700">
