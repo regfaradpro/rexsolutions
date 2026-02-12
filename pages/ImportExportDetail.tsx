@@ -282,30 +282,46 @@ const ImportExportDetail: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const endpoint =
-        sector === "materiaux"
-          ? "/api/send-materials-email"
-          : "/api/send-email";
+      let endpoint = "/api/send-email";
+      let body: any = {};
 
-      const body =
-        sector === "materiaux"
-          ? {
-            nomComplet: formData.nomComplet,
-            email: formData.email,
-            phone: `${formData.prefix} ${formData.telephone}`,
-            typeMateriaux: formData.modeleRecherche,
-            budget: formData.budget,
-            delai: formData.delai,
-          }
-          : {
-            name: formData.nomComplet,
-            email: formData.email,
-            phone: `${formData.prefix} ${formData.telephone}`,
-            model: formData.modeleRecherche,
-            budget: formData.budget,
-            delay: formData.delai,
-            sector: sectorData.title,
-          };
+      if (sector === "materiaux") {
+        endpoint = "/api/send-materials-email";
+        body = {
+          nomComplet: formData.nomComplet,
+          email: formData.email,
+          phone: `${formData.prefix} ${formData.telephone}`,
+          typeMateriaux: formData.modeleRecherche,
+          budget: formData.budget,
+          delai: formData.delai,
+        };
+      }
+
+      else if (sector === "camions-citernes") {
+        endpoint = "/api/send-camion-citerne";
+        body = {
+          nomComplet: formData.nomComplet,
+          email: formData.email,
+          phone: `${formData.prefix} ${formData.telephone}`,
+          typeCiterne: formData.modeleRecherche,
+          budget: formData.budget,
+          delai: formData.delai,
+        };
+      }
+
+      else {
+        // SUV & autres
+        endpoint = "/api/send-email";
+        body = {
+          name: formData.nomComplet,
+          email: formData.email,
+          phone: `${formData.prefix} ${formData.telephone}`,
+          model: formData.modeleRecherche,
+          budget: formData.budget,
+          delay: formData.delai,
+          sector: sectorData.title,
+        };
+      }
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -316,6 +332,7 @@ const ImportExportDetail: React.FC = () => {
       if (!res.ok) throw new Error("Erreur API");
 
       setIsSuccess(true);
+
     } catch (error) {
       console.error(error);
       alert("Erreur lors de l’envoi. Contactez-nous au +32 466 253 255.");
@@ -323,6 +340,7 @@ const ImportExportDetail: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+
 
 
 
