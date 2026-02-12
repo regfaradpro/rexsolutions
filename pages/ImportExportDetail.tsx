@@ -570,7 +570,7 @@ const ImportExportDetail: React.FC = () => {
                   <button disabled={isSubmitting} type="submit" className={`w-full py-5 font-black rounded-2xl transition-all flex items-center justify-center gap-3 shadow-xl ${isSuccess ? 'bg-green-600 text-white' : 'bg-black text-white hover:bg-gray-800'}`}>
                     {isSubmitting ? <><Loader2 className="h-5 w-5 animate-spin" /><span>TRAITEMENT...</span></> : isSuccess ? <><CheckCircle2 className="h-5 w-5" /><span>DEMANDE TRANSMISE !</span></> : <><Send className="h-5 w-5" /><span>DEMANDER LE DEVIS</span></>}
                   </button>
-                  {isSuccess && <div className="mt-8 text-center text-sm font-medium text-gray-700">Faradji Régis (Gérant) traitera votre demande sous 24h.</div>}
+                  {isSuccess && <div className="mt-8 text-center text-sm font-medium text-gray-700">L'équipe de Rex Solutions traite votre demande</div>}
                 </div>
               </form>
             </div>
