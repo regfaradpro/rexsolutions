@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
     <footer className="bg-gray-950 text-gray-400 py-16 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-24">
-          
+
           {/* Brand Column */}
           <div className="md:col-span-5 space-y-6">
             <div className="flex items-center gap-3">
@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-4">
               <li>
                 <Link to="/abonnements" className="text-gray-400 hover:text-white transition-all flex items-center group font-medium">
-                  Abonnements 
+                  Abonnements
                   <ArrowUpRight className="h-3 w-3 ml-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                 </Link>
               </li>
@@ -62,15 +62,20 @@ const Footer: React.FC = () => {
               </a>
               <p className="text-[10px] font-bold text-gray-600 uppercase mb-1">Ligne Directes</p>
               <a href="tel:+32466253255" className="block group">
-                <p className="text-white group-hover:text-gray-300 transition-colors font-medium">Managing Director +32 466 253 255</p>
+                <div className="pt-4 flex items-center gap-4">
+                  <div className="px-3 py-1 bg-white/5 rounded-md border border-white/10">
+                    <span className="text-[10px] font-bold text-white uppercase tracking-widest">MANAGING DIRECTOR</span>
+                    <p className="text-white group-hover:text-gray-300 transition-colors font-medium">+32 466 253 255</p>
+                  </div>
+                </div>
               </a>
               <a href="tel:+32465710189" className="block group">
                 <p className="text-white group-hover:text-gray-300 transition-colors font-medium">Business Manager +32 465 710 189</p>
               </a>
-              <a href="tel:+32470665114" className="block group">  
+              <a href="tel:+32470665114" className="block group">
                 <p className="text-white group-hover:text-gray-300 transition-colors font-medium">Associate Manager +32 470 665 114</p>
               </a>
-              
+
             </div>
           </div>
         </div>
