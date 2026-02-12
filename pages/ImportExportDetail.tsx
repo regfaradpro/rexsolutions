@@ -310,7 +310,6 @@ const ImportExportDetail: React.FC = () => {
       }
 
       else {
-        // SUV & autres
         endpoint = "/api/send-email";
         body = {
           name: formData.nomComplet,
@@ -333,6 +332,23 @@ const ImportExportDetail: React.FC = () => {
 
       setIsSuccess(true);
 
+      // ✅ RESET AUTOMATIQUE (comme Transport)
+      setTimeout(() => {
+        setFormData({
+          nomComplet: '',
+          email: '',
+          prefix: '+32',
+          prefixCode: 'BE',
+          telephone: '',
+          modeleRecherche: '',
+          budget: '',
+          delai: ''
+        });
+
+        setIsSuccess(false);
+        setErrors({});
+      }, 5000);
+
     } catch (error) {
       console.error(error);
       alert("Erreur lors de l’envoi. Contactez-nous au +32 466 253 255.");
@@ -340,8 +356,6 @@ const ImportExportDetail: React.FC = () => {
       setIsSubmitting(false);
     }
   };
-
-
 
 
   const selectCountry = (c: typeof COUNTRIES[0]) => {
