@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
-import { ShoppingBag, Laptop, Smartphone, Users, ArrowRight, CheckCircle2, HardHat, Pickaxe, Truck, Layers, Ruler, ShieldCheck } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ShoppingBag, Laptop, Smartphone, Users, ArrowRight, CheckCircle2, HardHat, Pickaxe, Truck, Layers, Ruler, ShieldCheck, ChevronLeft } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Commerce: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'digital' | 'materials'>('digital');
-
+  const navigate = useNavigate();
   const digitalFeatures = [
     {
       icon: <Laptop className="h-12 w-12 text-black mb-6" />,
@@ -50,6 +50,13 @@ const Commerce: React.FC = () => {
           <ShoppingBag className="h-96 w-96 text-white" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <button 
+            onClick={() => navigate('/')}
+            className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-300 hover:text-white transition-colors mb-12 group"
+          >
+            <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Retour à l'accueil
+          </button>
           <span className="text-xs font-black uppercase tracking-[0.4em] text-gray-500 mb-4 block">Pôle Commerce</span>
           <h1 className="text-4xl md:text-7xl font-black mb-6 tracking-tighter uppercase leading-[0.9]">
             Solutions de Vente <br/> <span className="text-gray-500">& Matériaux BTP</span>

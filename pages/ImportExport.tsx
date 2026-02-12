@@ -1,11 +1,12 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Car, HardHat, Utensils, ArrowRight, Fuel } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Car, HardHat, Utensils, ArrowRight, Fuel, ChevronLeft } from 'lucide-react';
 
 type Sector = 'vehicules' | 'materiaux' | 'alimentation' | 'camions-citernes';
 
 const ImportExport: React.FC = () => {
+  const navigate = useNavigate();
   const sectors = [
     { 
       id: 'vehicules' as Sector, 
@@ -41,6 +42,13 @@ const ImportExport: React.FC = () => {
     <div className="bg-white min-h-screen selection:bg-black selection:text-white">
       <section className="py-24 md:py-32">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+           <button 
+            onClick={() => navigate('/')}
+            className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-black transition-colors mb-12 group"
+          >
+            <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Retour à l'accueil
+          </button>
           <div className="mb-24 animate-in fade-in slide-in-from-bottom-5 duration-700">
             <span className="text-[11px] font-black uppercase tracking-[0.6em] text-gray-400 mb-6 block">Flux Internationaux</span>
             <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-[0.85] mb-8">

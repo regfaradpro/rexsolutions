@@ -4,9 +4,12 @@ import {
   Briefcase, Search, Lightbulb, TrendingUp, Target,
   ClipboardList, GraduationCap, User, Mail, Phone,
   Calendar, Clock, MessageSquare, Send, CheckCircle2, Loader2,
-  ChevronDown, X
+  ChevronDown, X,
+  ChevronLeft
 } from 'lucide-react';
 import { COUNTRIES } from '../components/constants';
+import { useNavigate } from 'react-router-dom';
+
 
 const Consultance: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -14,6 +17,7 @@ const Consultance: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     nom: '',
@@ -108,6 +112,13 @@ const Consultance: React.FC = () => {
           <Briefcase className="h-96 w-96 text-black" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <button
+            onClick={() => navigate('/')}
+            className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-300 hover:text-white transition-colors mb-12 group"
+          >
+            <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Retour à l'accueil
+          </button>
           <h1 className="text-4xl md:text-6xl font-black mb-6 text-gray-900 uppercase tracking-tighter">Consultance & Audit</h1>
           <p className="text-xl text-gray-600 max-w-3xl leading-relaxed font-light">
             Optimisez vos processus internes et préparez votre entreprise aux défis de demain grâce à l'expertise opérationnelle de l'équipe de Rex Solutions.
@@ -195,9 +206,9 @@ const Consultance: React.FC = () => {
                   <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 className="h-10 w-10" />
                   </div>
-                  <h3 className="text-2xl font-black uppercase mb-4">Demande Reçue !</h3>
+                  <h3 className="text-2xl font-black uppercase mb-4">Demande Transmise !</h3>
                   <p className="text-gray-500 leading-relaxed">
-                    Votre demande de rendez-vous a été transmise avec succès. Faradji Régis reviendra vers vous sous 24h pour confirmer le créneau.
+                    Votre demande de rendez-vous a été transmise avec succès. notre équipe reviendra vers vous sous 24h pour confirmer le créneau.
                   </p>
                 </div>
               ) : (
