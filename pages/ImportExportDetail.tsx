@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { Car, HardHat, Utensils, ArrowLeft, ArrowRight, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle, Fuel, X } from 'lucide-react';
 
 const COUNTRIES = [
@@ -149,6 +149,7 @@ const TANKER_REALISATIONS = [
 
 const ImportExportDetail: React.FC = () => {
   const { sector } = useParams<{ sector: string }>();
+  const { hash } = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -168,6 +169,19 @@ const ImportExportDetail: React.FC = () => {
     budget: '',
     delai: ''
   });
+
+  // Gestion du défilement automatique vers le formulaire si le hash est présent
+  useEffect(() => {
+    if (hash === '#devis-form') {
+      const timer = setTimeout(() => {
+        const element = document.getElementById('devis-form');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500); // Petit délai pour laisser le temps au composant de se monter et au ScrollToTop global de s'exécuter
+      return () => clearTimeout(timer);
+    }
+  }, [hash]);
 
   useEffect(() => {
     if (sector !== 'vehicules' && sector !== 'camions-citernes') return;
