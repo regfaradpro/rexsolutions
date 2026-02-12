@@ -298,7 +298,7 @@ const ImportExportDetail: React.FC = () => {
       }
 
       else if (sector === "camions-citernes") {
-        endpoint = "/api/send-camion-citerne";
+        endpoint = "/api/send-camion-citerne-email";
         body = {
           nomComplet: formData.nomComplet,
           email: formData.email,
