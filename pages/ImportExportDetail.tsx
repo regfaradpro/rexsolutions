@@ -282,18 +282,35 @@ const ImportExportDetail: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/send-email", {
+      const endpoint =
+        sector === "materiaux"
+          ? "/api/send-materials-email"
+          : "/api/send-email";
+
+      const body =
+        sector === "materiaux"
+          ? {
+            nomComplet: formData.nomComplet,
+            email: formData.email,
+            phone: `${formData.prefix} ${formData.telephone}`,
+            typeMateriaux: formData.modeleRecherche,
+            budget: formData.budget,
+            delai: formData.delai,
+          }
+          : {
+            name: formData.nomComplet,
+            email: formData.email,
+            phone: `${formData.prefix} ${formData.telephone}`,
+            model: formData.modeleRecherche,
+            budget: formData.budget,
+            delay: formData.delai,
+            sector: sectorData.title,
+          };
+
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.nomComplet,
-          email: formData.email,
-          phone: `${formData.prefix} ${formData.telephone}`,
-          model: formData.modeleRecherche,
-          budget: formData.budget,
-          delay: formData.delai,
-          sector: sectorData.title
-        }),
+        body: JSON.stringify(body),
       });
 
       if (!res.ok) throw new Error("Erreur API");
@@ -306,6 +323,7 @@ const ImportExportDetail: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+
 
 
   const selectCountry = (c: typeof COUNTRIES[0]) => {
