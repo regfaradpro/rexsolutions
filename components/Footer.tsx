@@ -65,9 +65,9 @@ const Footer: React.FC = () => {
                 <div className="pt-4 flex items-center gap-4">
                   <div className="px-3 py-1 bg-white/5 rounded-md border border-white/10">
                     <span className="text-[10px] font-bold text-white uppercase tracking-widest">MANAGING DIRECTOR</span>
-                    <p className="text-white group-hover:text-gray-300 transition-colors font-medium">+32 466 253 255</p>
                   </div>
                 </div>
+                <p className="text-white group-hover:text-gray-300 transition-colors font-medium">+32 466 253 255</p>
               </a>
               <a href="tel:+32465710189" className="block group">
                 <p className="text-white group-hover:text-gray-300 transition-colors font-medium">Business Manager +32 465 710 189</p>
