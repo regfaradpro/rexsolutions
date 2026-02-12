@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Car, HardHat, Utensils, ArrowLeft, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle, Fuel, X } from 'lucide-react';
+import { Car, HardHat, Utensils, ArrowLeft, ArrowRight, Send, CheckCircle2, Loader2, ShieldCheck, ChevronLeft, ChevronRight, Search, ChevronDown, AlertCircle, Fuel, X } from 'lucide-react';
 
 const COUNTRIES = [
   { code: 'BE', name: 'Belgique', dial: '+32' },
@@ -153,7 +153,7 @@ const ImportExportDetail: React.FC = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
-  
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -189,8 +189,8 @@ const ImportExportDetail: React.FC = () => {
   }, []);
 
   const filteredCountries = useMemo(() => {
-    return COUNTRIES.filter(c => 
-      c.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    return COUNTRIES.filter(c =>
+      c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       c.dial.includes(searchQuery)
     );
   }, [searchQuery]);
@@ -262,36 +262,36 @@ const ImportExportDetail: React.FC = () => {
   };
 
   const handleRequestQuote = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!validateForm()) return;
+    e.preventDefault();
+    if (!validateForm()) return;
 
-  setIsSubmitting(true);
+    setIsSubmitting(true);
 
-  try {
-    const res = await fetch("/api/send-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: formData.nomComplet,
-        email: formData.email,
-        phone: `${formData.prefix} ${formData.telephone}`,
-        model: formData.modeleRecherche,
-        budget: formData.budget,
-        delay: formData.delai,
-        sector: sectorData.title
-      }),
-    });
+    try {
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.nomComplet,
+          email: formData.email,
+          phone: `${formData.prefix} ${formData.telephone}`,
+          model: formData.modeleRecherche,
+          budget: formData.budget,
+          delay: formData.delai,
+          sector: sectorData.title
+        }),
+      });
 
-    if (!res.ok) throw new Error("Erreur API");
+      if (!res.ok) throw new Error("Erreur API");
 
-    setIsSuccess(true);
-  } catch (error) {
-    console.error(error);
-    alert("Erreur lors de l’envoi. Contactez-nous au +32 466 253 255.");
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+      setIsSuccess(true);
+    } catch (error) {
+      console.error(error);
+      alert("Erreur lors de l’envoi. Contactez-nous au +32 466 253 255.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
 
   const selectCountry = (c: typeof COUNTRIES[0]) => {
@@ -352,8 +352,8 @@ const ImportExportDetail: React.FC = () => {
                 </div>
               ))}
               <div className="absolute right-8 bottom-8 z-30 flex items-center gap-4">
-                <button onClick={() => setCurrentSlide(prev => (prev === 0 ? sectorData.gallery!.length - 1 : prev - 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronLeft className="h-5 w-5"/></button>
-                <button onClick={() => setCurrentSlide(prev => (prev === sectorData.gallery!.length - 1 ? 0 : prev + 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronRight className="h-5 w-5"/></button>
+                <button onClick={() => setCurrentSlide(prev => (prev === 0 ? sectorData.gallery!.length - 1 : prev - 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronLeft className="h-5 w-5" /></button>
+                <button onClick={() => setCurrentSlide(prev => (prev === sectorData.gallery!.length - 1 ? 0 : prev + 1))} className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-black transition-all flex items-center justify-center shadow-xl"><ChevronRight className="h-5 w-5" /></button>
               </div>
             </div>
           </div>
@@ -367,14 +367,35 @@ const ImportExportDetail: React.FC = () => {
             <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-80">
               {(sector === 'vehicules' ? BRAND_LOGOS : TRUCK_BRAND_LOGOS).map((logo, i) => (
                 <div key={i} className="h-12 md:h-16 w-auto group transition-all duration-500">
-                  <img 
-                    src={logo} 
-                    alt="Marque partenaire" 
-                    className="h-full w-auto object-contain transition-all duration-500 hover:scale-110" 
+                  <img
+                    src={logo}
+                    alt="Marque partenaire"
+                    className="h-full w-auto object-contain transition-all duration-500 hover:scale-110"
                   />
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* Catalogue CTA Section for Materials */}
+      {sector === 'materiaux' && (
+        <section className="bg-gray-50 border-y border-gray-100 py-16 mb-12">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-black uppercase tracking-tighter mb-4 leading-none">Catalogue de Matériaux</h2>
+              <p className="text-gray-500 font-light leading-relaxed">
+                Accédez à notre inventaire complet de ciment, briques, acier et bois. Consultez les spécifications techniques détaillées avant de soumettre votre demande d'approvisionnement.
+              </p>
+            </div>
+            <Link
+              to="/commerce/catalogue-materiaux"
+              className="inline-flex items-center px-10 py-5 bg-black text-white font-black rounded-2xl hover:bg-gray-800 transition-all uppercase tracking-widest text-sm shadow-2xl group shrink-0"
+            >
+              Consulter le catalogue
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
         </section>
       )}
@@ -424,26 +445,26 @@ const ImportExportDetail: React.FC = () => {
                         </div>
                         <ChevronDown className={`h-3 w-3 text-gray-400 ${isDropdownOpen ? 'rotate-180' : ''}`} />
                       </div>
-                      
+
                       {/* Country Dropdown List */}
                       {isDropdownOpen && (
                         <div className="absolute top-[100%] left-0 w-[280px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-[100] mt-2 animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
                           <div className="p-4 border-b border-gray-50 flex items-center gap-3 bg-gray-50/50">
                             <Search className="h-4 w-4 text-gray-400" />
-                            <input 
-                              type="text" 
-                              placeholder="Rechercher un pays..." 
+                            <input
+                              type="text"
+                              placeholder="Rechercher un pays..."
                               className="w-full bg-transparent outline-none text-sm font-bold"
                               value={searchQuery}
                               onChange={(e) => setSearchQuery(e.target.value)}
                               autoFocus
                             />
-                            {searchQuery && <button onClick={() => setSearchQuery('')}><X className="h-3 w-3 text-gray-400"/></button>}
+                            {searchQuery && <button onClick={() => setSearchQuery('')}><X className="h-3 w-3 text-gray-400" /></button>}
                           </div>
                           <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
                             {filteredCountries.map((c) => (
-                              <div 
-                                key={c.code} 
+                              <div
+                                key={c.code}
                                 onClick={() => selectCountry(c)}
                                 className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors group"
                               >
