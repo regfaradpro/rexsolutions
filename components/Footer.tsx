@@ -93,7 +93,7 @@ const Footer: React.FC = () => {
                       ASSOCIATE MANAGER
                     </span>
                   </div>
-                  <span className="text-white font-medium group-hover:text-gray-300 transition-colors">
+                  <span className="text-[10px] font-bold text-white uppercase tracking-widest">
                     +32 470 665 114
                   </span>
                 </div>
