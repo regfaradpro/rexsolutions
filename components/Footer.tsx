@@ -61,14 +61,19 @@ const Footer: React.FC = () => {
                 <p className="text-white group-hover:text-gray-300 transition-colors font-medium">rexsolutionspro@gmail.com</p>
               </a>
               <p className="text-[10px] font-bold text-gray-600 uppercase mb-1">Ligne Directes</p>
-              <a href="tel:+32466253255" className="block group">
+              <a href="tel:+32466253255" className="group">
                 <div className="pt-4 flex items-center gap-4">
                   <div className="px-3 py-1 bg-white/5 rounded-md border border-white/10">
-                    <span className="text-[10px] font-bold text-white uppercase tracking-widest">MANAGING DIRECTOR</span>
+                    <span className="text-[10px] font-bold text-white uppercase tracking-widest">
+                      MANAGING DIRECTOR
+                    </span>
                   </div>
+                  <span className="text-white font-medium group-hover:text-gray-300 transition-colors">
+                    +32 466 253 255
+                  </span>
                 </div>
-                <p className="text-white group-hover:text-gray-300 transition-colors font-medium">+32 466 253 255</p>
               </a>
+
               <a href="tel:+32465710189" className="block group">
                 <p className="text-white group-hover:text-gray-300 transition-colors font-medium">Business Manager +32 465 710 189</p>
               </a>
