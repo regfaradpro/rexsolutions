@@ -22,9 +22,6 @@ const Footer: React.FC = () => {
             </p>
             <div className="pt-4 flex items-center gap-4">
               <div className="px-3 py-1 bg-white/5 rounded-md border border-white/10">
-                <span className="text-[10px] font-bold text-white uppercase tracking-widest">BE1020.913.716</span>
-              </div>
-              <div className="px-3 py-1 bg-white/5 rounded-md border border-white/10">
                 <span className="text-[10px] font-bold text-white uppercase tracking-widest">Belgique</span>
               </div>
             </div>
@@ -57,27 +54,29 @@ const Footer: React.FC = () => {
 
           {/* Contact Column */}
           <div className="md:col-span-4 space-y-8">
-            <h4 className="text-white text-xs font-black uppercase tracking-[0.3em] pb-2 border-b border-white/10 inline-block">Support & Contact</h4>
+            <h4 className="text-white text-xs font-black uppercase tracking-[0.3em] pb-2 border-b border-white/10 inline-block">Support & Contacts</h4>
             <div className="space-y-6">
               <a href="mailto:rexsolutionspro@gmail.com" className="block group">
                 <p className="text-[10px] font-bold text-gray-600 uppercase mb-1">Email Expertise</p>
                 <p className="text-white group-hover:text-gray-300 transition-colors font-medium">rexsolutionspro@gmail.com</p>
               </a>
+              <p className="text-[10px] font-bold text-gray-600 uppercase mb-1">Ligne Directes</p>
               <a href="tel:+32466253255" className="block group">
-                <p className="text-[10px] font-bold text-gray-600 uppercase mb-1">Ligne Directe</p>
-                <p className="text-white group-hover:text-gray-300 transition-colors font-medium">+32 466 253 255</p>
+                <p className="text-white group-hover:text-gray-300 transition-colors font-medium">Managing Director +32 466 253 255</p>
               </a>
+              <a href="tel:+32465710189" className="block group">
+                <p className="text-white group-hover:text-gray-300 transition-colors font-medium">Business Manager +32 465 710 189</p>
+              </a>
+              <a href="tel:+32470665114" className="block group">  
+                <p className="text-white group-hover:text-gray-300 transition-colors font-medium">Associate Manager +32 470 665 114</p>
+              </a>
+              
             </div>
           </div>
         </div>
 
         <div className="mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-gray-600">
           <p>&copy; {new Date().getFullYear()} Rex Solutions. Tous droits réservés.</p>
-          <div className="flex items-center gap-6">
-            <span>Gérant : Faradji Régis</span>
-            <span className="hidden md:inline text-white/10">|</span>
-            <span>Made in Belgium</span>
-          </div>
         </div>
       </div>
     </footer>

@@ -110,7 +110,7 @@ const Consultance: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <h1 className="text-4xl md:text-6xl font-black mb-6 text-gray-900 uppercase tracking-tighter">Consultance & Audit</h1>
           <p className="text-xl text-gray-600 max-w-3xl leading-relaxed font-light">
-            Optimisez vos processus internes et préparez votre entreprise aux défis de demain grâce à l'expertise opérationnelle de Faradji Régis.
+            Optimisez vos processus internes et préparez votre entreprise aux défis de demain grâce à l'expertise opérationnelle de l'équipe de Rex Solutions.
           </p>
         </div>
       </section>
@@ -339,7 +339,7 @@ const Consultance: React.FC = () => {
                     {isSubmitting ? (
                       <><Loader2 className="h-5 w-5 animate-spin" /> <span>Traitement...</span></>
                     ) : (
-                      <><Send className="h-5 w-5" /> <span>Valider le rendez-vous</span></>
+                      <><Send className="h-5 w-5" /> <span>Demander le rendez-vous</span></>
                     )}
                   </button>
                 </form>
@@ -356,7 +356,7 @@ const Consultance: React.FC = () => {
             "La performance digitale n'est plus une option, c'est le moteur de votre rentabilité future en Belgique."
           </p>
           <div className="font-black uppercase tracking-widest text-sm">
-            Faradji Régis — <span className="text-gray-400">Directeur Rex Solutions</span>
+            Faradji Régis — <span className="text-gray-400">Managing Director Rex Solutions</span>
           </div>
         </div>
       </section>
