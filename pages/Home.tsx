@@ -104,7 +104,7 @@ const Home: React.FC = () => {
           <div className="md:w-1/2">
             <h2 className="text-4xl font-extrabold text-gray-900 mb-6">Qui sommes-nous ? Notre Mission</h2>
             <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              Basée en Belgique, Rex Solutions est une société composée d'un Managing Director, un Business Manager et un Associate Manager. Ensemble, notre mission est de fournir des services de haute qualité, alliant la flexibilité numérique et l'expertise opérationnelle multisectorielle.
+              Basée en Belgique, Rex Solutions est une société composée d'un Managing Director et un Business Manager. Ensemble, notre mission est de fournir des services de haute qualité, alliant la flexibilité numérique et l'expertise opérationnelle multisectorielle.
             </p>
             <div className="grid grid-cols-2 gap-6">
               <div className="p-4 bg-white rounded-lg shadow-sm">
