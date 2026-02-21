@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Home: React.FC = () => {
   const pillars = [
     {
-      title: "Commerce",
+      title: "Intermédiation Commerce",
       description: "Solutions de commerce modernes et services numériques innovants pour dynamiser votre activité.",
       icon: <ShoppingBag className="h-8 w-8 text-white" />,
       image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&q=80&w=800",
