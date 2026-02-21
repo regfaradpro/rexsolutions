@@ -86,7 +86,7 @@ const Footer: React.FC = () => {
                   </span>
                 </div>
               </a>
-              {/* *<a href="tel:+32470665114" className="block group">
+              {/*<a href="tel:+32470665114" className="block group">
                 <div className="pt-4 flex items-center gap-4">
                   <div className="px-3 py-1 bg-white/5 rounded-md border border-white/10">
                     <span className="text-[10px] font-bold text-white uppercase tracking-widest">
@@ -97,7 +97,7 @@ const Footer: React.FC = () => {
                     +32 470 665 114
                   </span>
                 </div>
-              </a>
+              </a>/*/}
             </div>
           </div>
         </div>
