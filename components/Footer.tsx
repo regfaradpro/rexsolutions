@@ -97,7 +97,7 @@ const Footer: React.FC = () => {
                     +32 470 665 114
                   </span>
                 </div>
-              </a>/ */}
+              </a>
             </div>
           </div>
         </div>
